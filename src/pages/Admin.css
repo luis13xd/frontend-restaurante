@@ -232,16 +232,16 @@ li span:hover {
 .product-card {
     display: flex;
     align-items: center;
-    justify-content: space-between; /* Distribuye los elementos horizontalmente */
+    justify-content: space-between; 
     border: 1px solid #ccc;
     border-radius: 5px;
     width: 100%;
-    max-width: 500px;
+    max-width: 600px;
     background-color: #fff;
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
     padding-right: 10px;
     margin: auto;
-    flex-wrap: wrap; /* Permite que los elementos se ajusten en pantallas pequeñas */
+    flex-wrap: wrap; 
 }
 
 .product-card:hover {

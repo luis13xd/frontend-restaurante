@@ -1,9 +1,15 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { FaShoppingCart, FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
+import CartModal from "./CartModal";
 import "./Navbar.css";
-import { FaSignInAlt, FaUserPlus } from "react-icons/fa";
 import logo from "../assets/logo.jpeg";
 
 function Navbar() {
+  const { cart } = useCart();
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
   const scrollToNosotros = () => {
     const section = document.getElementById("nosotros");
     if (section) {
@@ -22,6 +28,11 @@ function Navbar() {
         <a onClick={scrollToNosotros} style={{ cursor: "pointer" }}>Nosotros</a>
       </div>
 
+      <div className="cart-icon" onClick={() => setIsCartOpen(true)}>
+          <FaShoppingCart />
+          {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
+        </div>
+
       <div className="auth-links">
         <Link to="/login">
           <FaSignInAlt />
@@ -30,6 +41,7 @@ function Navbar() {
           <FaUserPlus />
         </Link>
       </div>
+      {isCartOpen && <CartModal onClose={() => setIsCartOpen(false)} />}
     </nav>
   );
 }

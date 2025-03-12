@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { FaPlus } from "react-icons/fa";
-
+import { FaPlus, FaMinus } from "react-icons/fa";
+import { useCart } from "../context/CartContext";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -12,6 +12,7 @@ import nosotrosImg3 from "../assets/nosotrosImg3.jpeg";
 import Footer from "../components/Footer";
 
 function Home() {
+  const { cart, addToCart, removeFromCart } = useCart();
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -80,25 +81,38 @@ function Home() {
       {/* Productos de la categoría seleccionada */}
       <div className="products-container">
         {products.length > 0 ? (
-          products.map((product) => (
-            <div key={product._id} className="product-card">
-              <div className="product-info">
-                <img
-                  src={`${import.meta.env.VITE_API_URL}/photos/${product.image}`} 
-                  alt={product.name}
-                  className="product-image"
-                />
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p>
-                  <strong>Precio:</strong> ${product.price}
-                </p>
-                <div className="add-button">
-                  <FaPlus />
+          products.map((product) => {
+            const cartItem = cart.find((item) => item._id === product._id);
+            return (
+              <div key={product._id} className="product-card">
+                <div className="product-info">
+                  <img
+                    src={`${import.meta.env.VITE_API_URL}/photos/${product.image}`} 
+                    alt={product.name}
+                    className="product-image"
+                  />
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <p><strong>${product.price}</strong></p>
+                  
+                  {/* Controles de carrito */}
+                  <div className="cart-controls">
+                    {cartItem?.quantity > 0 && (
+                      <>
+                        <button className="decrease-btn" onClick={() => removeFromCart(product._id)}>
+                          <FaMinus />
+                        </button>
+                        <span className="quantity">{cartItem.quantity}</span>
+                      </>
+                    )}
+                    <button className="increase-btn" onClick={() => addToCart(product)}>
+                      <FaPlus />
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>No hay productos disponibles en esta categoría.</p>
         )}
