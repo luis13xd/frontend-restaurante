@@ -87,7 +87,7 @@ function Home() {
               <div key={product._id} className="product-card">
                 <div className="product-info">
                   <img
-                    src={`${import.meta.env.VITE_API_URL}/photos/${product.image}`} 
+                    src={product.image}
                     alt={product.name}
                     className="product-image"
                   />
