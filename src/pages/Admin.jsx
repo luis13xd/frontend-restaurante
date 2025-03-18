@@ -218,33 +218,38 @@ function AdminPanel() {
       .catch((err) => console.error("Error al cambiar estado:", err.message));
   }
   const updateProduct = async (e) => {
-    e.preventDefault(); // Evitar recargas
+    e.preventDefault();
     if (!editingProduct) return;
     const token = sessionStorage.getItem("token");
     const formData = new FormData();
     Object.entries(newProduct).forEach(([key, value]) => {
-      if (value) formData.append(key, value);
+        if (value) formData.append(key, value);
     });
     if (!newProduct.image && editingProduct.image) {
-      formData.append("image", editingProduct.image);
+        formData.append("image", editingProduct.image);
     }
     const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
-      {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
-      }
+        `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
+        {
+            method: "PUT",
+            headers: { Authorization: `Bearer ${token}` },
+            body: formData,
+        }
     );
     if (res.ok) {
-      fetchProducts(selectedCategoryRef.current);
-      setEditingProduct(null);
-      setNewProduct({ name: "", description: "", price: "", image: null });
-      if (productFormRef.current) {
-        productFormRef.current.reset();
-      }
+        const updatedProduct = await res.json(); // Obtener el producto actualizado de la respuesta
+        setProducts((prevProducts) =>
+            prevProducts.map((p) =>
+                p._id === updatedProduct._id ? updatedProduct : p
+            )
+        );
+        setEditingProduct(null);
+        setNewProduct({ name: "", description: "", price: "", image: null });
+        if (productFormRef.current) {
+            productFormRef.current.reset();
+        }
     }
-  };
+};
 
   const deleteProduct = async (productId) => {
     const token = sessionStorage.getItem("token");
