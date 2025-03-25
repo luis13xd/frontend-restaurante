@@ -23,6 +23,9 @@ function Home() {
       .then((res) => res.json())
       .then((data) => {
         setCategories(data);
+        if (data.length > 0) {
+          setSelectedCategory(data[0]._id); // Establecer la primera categoría al cargar
+        }
       })
       .catch((err) => console.error("Error al obtener categorías:", err));
   }, []);
@@ -39,6 +42,7 @@ function Home() {
       .then((data) => setProducts(data))
       .catch((err) => console.error("Error al obtener productos:", err));
   }, [selectedCategory]);
+
 
   const [movies, setMovies] = useState([]);
   // Obtener películas
