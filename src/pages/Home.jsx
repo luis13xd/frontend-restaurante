@@ -23,21 +23,21 @@ function Home() {
       .then((res) => res.json())
       .then((data) => {
         setCategories(data);
-        if (data.length > 0) {
-          setSelectedCategory(data[0]._id); // Selecciona la primera categoría por defecto
-        }
       })
       .catch((err) => console.error("Error al obtener categorías:", err));
   }, []);
 
   // Obtener productos de la categoría seleccionada
   useEffect(() => {
+    let url = `${import.meta.env.VITE_API_URL}/public/products`;
     if (selectedCategory) {
-      fetch(`${import.meta.env.VITE_API_URL}/public/products?categoryId=${selectedCategory}`)
-        .then((res) => res.json())
-        .then((data) => setProducts(data))
-        .catch((err) => console.error("Error al obtener productos:", err));
+      url += `?categoryId=${selectedCategory}`;
     }
+
+    fetch(url)
+      .then((res) => res.json())
+      .then((data) => setProducts(data))
+      .catch((err) => console.error("Error al obtener productos:", err));
   }, [selectedCategory]);
 
   const [movies, setMovies] = useState([]);

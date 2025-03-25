@@ -25,7 +25,7 @@ function AdminPanel() {
     newProduct.description ||
     newProduct.price ||
     newProduct.image;
-    const imageInputRef = useRef(null);
+  const imageInputRef = useRef(null);
 
   useEffect(() => {
     const token = sessionStorage.getItem("token");
@@ -64,11 +64,16 @@ function AdminPanel() {
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    if (!file) return;
+    console.log("Archivo seleccionado:", file);
+
+    if (!file) {
+      console.warn("No se seleccionó ningún archivo.");
+      return;
+    }
 
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "infusion2"); // Reemplaza con tu preset de Cloudinary
+    formData.append("upload_preset", "infusion2");
 
     try {
       const res = await fetch(
@@ -79,14 +84,24 @@ function AdminPanel() {
         }
       );
 
-      const data = await res.json();
-      if (data.secure_url) {
-        // setNewProduct({ ...newProduct, image: data.secure_url });
-        setNewProduct((prev) => ({ ...prev, image: data.secure_url }));
+      if (!res.ok) {
+        // Manejar errores de Cloudinary
+        const errorData = await res.json();
+        console.error("Error al subir imagen a Cloudinary:", errorData);
+        return;
+      }
 
+      const data = await res.json();
+      console.log("Respuesta de Cloudinary:", data); // <-- Revisa si llega la URL
+
+      if (data.secure_url) {
+        setNewProduct((prev) => ({ ...prev, image: data.secure_url }));
+      } else {
+        console.error("Cloudinary no devolvió una URL segura:", data);
       }
     } catch (error) {
-      console.error("Error subiendo la imagen a Cloudinary", error);
+      // Manejar errores de red o errores inesperados
+      console.error("Error inesperado al subir imagen:", error);
     }
   };
 
@@ -138,7 +153,12 @@ function AdminPanel() {
 
   const addProduct = async (e) => {
     e.preventDefault();
-    if (!newProduct.name || !newProduct.image || !newProduct.price || !newProduct.description) {
+    if (
+      !newProduct.name ||
+      !newProduct.image ||
+      !newProduct.price ||
+      !newProduct.description
+    ) {
       alert("Por favor, completa todos los campos.");
       return;
     }
@@ -146,12 +166,13 @@ function AdminPanel() {
 
     console.log("Datos de newProduct:", newProduct); // Log del newProduct
     const categoryId = selectedCategoryRef.current || selectedCategory;
-  
+
     const res = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-     },
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
       body: JSON.stringify({
         name: newProduct.name,
         description: newProduct.description,
@@ -165,7 +186,7 @@ function AdminPanel() {
       setNewProduct({ name: "", description: "", price: "", image: null });
       if (imageInputRef.current) {
         imageInputRef.current.value = ""; // Limpiar el valor del input de imagen
-    }
+      }
     } else {
       const errorText = await res.text();
       console.error("Error en la solicitud:", res.status, errorText);
@@ -217,40 +238,56 @@ function AdminPanel() {
       })
       .catch((err) => console.error("Error al cambiar estado:", err.message));
   }
+
   const updateProduct = async (e) => {
     e.preventDefault();
     if (!editingProduct) return;
     const token = sessionStorage.getItem("token");
+
+    console.log("Datos del producto antes de actualizar:", newProduct);
+
     const formData = new FormData();
-    Object.entries(newProduct).forEach(([key, value]) => {
-        if (value) formData.append(key, value);
-    });
-    if (!newProduct.image && editingProduct.image) {
-        formData.append("image", editingProduct.image);
+    formData.append("name", newProduct.name);
+    formData.append("description", newProduct.description);
+    formData.append("price", newProduct.price);
+
+    // Solo agregar la imagen si se seleccionó una nueva
+    if (newProduct.image && newProduct.image !== editingProduct.image) {
+        formData.append("image", newProduct.image);
     }
-    const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
-        {
-            method: "PUT",
-            headers: { Authorization: `Bearer ${token}` },
-            body: formData,
-        }
-    );
-    if (res.ok) {
-        const updatedProduct = await res.json(); // Obtener el producto actualizado de la respuesta
-        setProducts((prevProducts) =>
-            prevProducts.map((p) =>
-                p._id === updatedProduct._id ? updatedProduct : p
-            )
+
+    try {
+        const res = await fetch(
+            `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
+            {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${token}` },
+                body: formData,
+            }
         );
-        setEditingProduct(null);
-        setNewProduct({ name: "", description: "", price: "", image: null });
-        if (productFormRef.current) {
-            productFormRef.current.reset();
+
+        const responseData = await res.json();
+        console.log("Respuesta del servidor:", responseData);
+
+        if (res.ok) {
+            setProducts((prevProducts) =>
+                prevProducts.map((p) =>
+                    p._id === responseData._id ? responseData : p
+                )
+            );
+            setEditingProduct(null);
+            setNewProduct({ name: "", description: "", price: "", image: null });
+            if (productFormRef.current) {
+                productFormRef.current.reset();
+            }
+        } else {
+            console.error("Error al actualizar producto:", res.status, responseData);
         }
+    } catch (error) {
+        console.error("Error inesperado al actualizar producto:", error);
     }
 };
-
+  
   const deleteProduct = async (productId) => {
     const token = sessionStorage.getItem("token");
     const res = await fetch(
@@ -369,12 +406,9 @@ function AdminPanel() {
                 type="file"
                 onChange={handleImageChange}
                 className="input"
-                ref={imageInputRef} 
+                ref={imageInputRef}
               />
-              <button
-                type="submit" 
-                className="boton-principal"
-              >
+              <button type="submit" className="boton-principal">
                 {editingProduct ? "Actualizar Producto" : "Agregar Producto"}
               </button>
               {hasData && (
