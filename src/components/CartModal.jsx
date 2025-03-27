@@ -37,7 +37,7 @@ function CartModal({ onClose }) {
           <>
             {cart.map((item) => (
               <div key={item._id} className="cart-item">
-                <img src={`${import.meta.env.VITE_API_URL}/photos/${item.image}`} alt={item.name} />
+                <img src={item.image} alt={item.name} />
                 <div className="item-info">
                   <h4>{item.name}</h4>
                   <p>${item.price} x {item.quantity}</p>
