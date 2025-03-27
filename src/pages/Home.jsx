@@ -130,7 +130,7 @@ function Home() {
             movies.map((movie) => (
               <div key={movie._id} className="movie-slide">
                 <img
-                  src={`${import.meta.env.VITE_API_URL}/photos/${movie.image}`}
+                  src={movie.image}
                   alt={movie.name}
                   className="movie-image"
                 />

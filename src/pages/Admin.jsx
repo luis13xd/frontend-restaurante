@@ -326,8 +326,10 @@ function AdminPanel() {
     description: "",
     dateTime: "",
     image: null,
+    imageFile: null,
   });
   const [editingMovie, setEditingMovie] = useState(null);
+  const movieImageInputRef = useRef(null);
 
   useEffect(() => {
     fetchMovies();
@@ -346,50 +348,72 @@ function AdminPanel() {
     setNewMovie({ ...newMovie, [e.target.name]: e.target.value });
   };
 
-  const handleImageMovieChange = (e) => {
+  const handleImageMovieChange = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      setNewMovie((prev) => ({ ...prev, image: file }));
-    } else {
-      setNewMovie((prev) => ({ ...prev, image: null }));
+    if (!file) return;
+
+    if (editingMovie) {
+      setNewMovie((prev) => ({ ...prev, image: file, imageFile: file }));
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", file);
+    formData.append("upload_preset", "infusion2");
+
+    try {
+      const res = await fetch(
+        "https://api.cloudinary.com/v1_1/dntqcucm0/image/upload",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
+
+      if (!res.ok) {
+        const errorData = await res.json();
+        console.error("Error al subir imagen a Cloudinary:", errorData);
+        return;
+      }
+
+      const data = await res.json();
+      if (data.secure_url) {
+        setNewMovie((prev) => ({ ...prev, image: data.secure_url }));
+      } else {
+        console.error("Cloudinary no devolvió una URL segura:", data);
+      }
+    } catch (error) {
+      console.error("Error inesperado al subir imagen:", error);
     }
   };
 
   const addMovie = async (e) => {
     e.preventDefault();
+    if (!newMovie.name || !newMovie.genre || !newMovie.description || !newMovie.dateTime || !newMovie.image) {
+      alert("Por favor, completa todos los campos.");
+      return;
+    }
+
     const token = sessionStorage.getItem("token");
-
-    const formData = new FormData();
-    formData.append("name", newMovie.name);
-    formData.append("genre", newMovie.genre);
-    formData.append("description", newMovie.description);
-    formData.append("dateTime", newMovie.dateTime);
-    if (newMovie.image) {
-      formData.append("image", newMovie.image);
-    }
-
-    console.log("FormData:", formData); // Debugging
-    for (var pair of formData.entries()) {
-      // Para debuggear el contenido del form data
-      console.log(pair[0] + ", " + pair[1]);
-    }
-
     const res = await fetch(`${import.meta.env.VITE_API_URL}/movies`, {
       method: "POST",
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: newMovie.name,
+        genre: newMovie.genre,
+        description: newMovie.description,
+        dateTime: newMovie.dateTime,
+        image: newMovie.image,
+      }),
     });
 
     if (res.ok) {
       fetchMovies();
-      setNewMovie({
-        name: "",
-        genre: "",
-        description: "",
-        dateTime: "",
-        image: null,
-      });
-      document.getElementById("movie-image-input").value = "";
+      setNewMovie({ name: "", genre: "", description: "", dateTime: "", image: null });
+      if (movieImageInputRef.current) movieImageInputRef.current.value = "";
     } else {
       const errorText = await res.text();
       console.error("Error al agregar película:", res.status, errorText);
