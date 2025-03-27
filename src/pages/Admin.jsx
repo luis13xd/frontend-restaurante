@@ -42,7 +42,7 @@ function AdminPanel() {
   };
 
   const fetchProducts = async (categoryId) => {
-    selectedCategoryRef.current = categoryId; // Guardar referencia de la categoría
+    selectedCategoryRef.current = categoryId; 
     if (!selectedCategory) setSelectedCategory(categoryId);
     const token = sessionStorage.getItem("token");
     const res = await fetch(
@@ -65,16 +65,20 @@ function AdminPanel() {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     console.log("Archivo seleccionado:", file);
-
     if (!file) {
       console.warn("No se seleccionó ningún archivo.");
       return;
     }
-
+    // Si estamos editando un producto, almacenamos la imagen localmente
+    if (editingProduct) {
+      setNewProduct((prev) => ({ ...prev, image: file, imageFile: file }));
+      console.log("Modo edición: imagen guardada localmente.");
+      return;
+    }
+    // Si estamos creando un producto, subimos la imagen a Cloudinary
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "infusion2");
-
     try {
       const res = await fetch(
         "https://api.cloudinary.com/v1_1/dntqcucm0/image/upload",
@@ -83,16 +87,14 @@ function AdminPanel() {
           body: formData,
         }
       );
-
       if (!res.ok) {
-        // Manejar errores de Cloudinary
         const errorData = await res.json();
         console.error("Error al subir imagen a Cloudinary:", errorData);
         return;
       }
 
       const data = await res.json();
-      console.log("Respuesta de Cloudinary:", data); // <-- Revisa si llega la URL
+      console.log("Respuesta de Cloudinary:", data);
 
       if (data.secure_url) {
         setNewProduct((prev) => ({ ...prev, image: data.secure_url }));
@@ -100,7 +102,6 @@ function AdminPanel() {
         console.error("Cloudinary no devolvió una URL segura:", data);
       }
     } catch (error) {
-      // Manejar errores de red o errores inesperados
       console.error("Error inesperado al subir imagen:", error);
     }
   };
@@ -242,52 +243,63 @@ function AdminPanel() {
   const updateProduct = async (e) => {
     e.preventDefault();
     if (!editingProduct) return;
+
     const token = sessionStorage.getItem("token");
-
-    console.log("Datos del producto antes de actualizar:", newProduct);
-
     const formData = new FormData();
     formData.append("name", newProduct.name);
     formData.append("description", newProduct.description);
     formData.append("price", newProduct.price);
 
-    // Solo agregar la imagen si se seleccionó una nueva
-    if (newProduct.image && newProduct.image !== editingProduct.image) {
-        formData.append("image", newProduct.image);
+    if (newProduct.imageFile) {
+      formData.append("image", newProduct.imageFile); // Adjuntar imagen si hay una nueva
     }
 
     try {
-        const res = await fetch(
-            `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
-            {
-                method: "PUT",
-                headers: { Authorization: `Bearer ${token}` },
-                body: formData,
-            }
-        );
-
-        const responseData = await res.json();
-        console.log("Respuesta del servidor:", responseData);
-
-        if (res.ok) {
-            setProducts((prevProducts) =>
-                prevProducts.map((p) =>
-                    p._id === responseData._id ? responseData : p
-                )
-            );
-            setEditingProduct(null);
-            setNewProduct({ name: "", description: "", price: "", image: null });
-            if (productFormRef.current) {
-                productFormRef.current.reset();
-            }
-        } else {
-            console.error("Error al actualizar producto:", res.status, responseData);
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
+        {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` }, // No usar "Content-Type": "application/json" con FormData
+          body: formData,
         }
+      );
+
+      const responseData = await res.json();
+
+      if (res.ok) {
+        setProducts((prevProducts) =>
+          prevProducts.map((p) =>
+            p._id === responseData._id ? responseData : p
+          )
+        );
+        setEditingProduct(null);
+        setNewProduct({
+          name: "",
+          description: "",
+          price: "",
+          image: null,
+          imageFile: null,
+        });
+
+        if (productFormRef.current) {
+          productFormRef.current.reset();
+        }
+
+        if (imageInputRef.current) {
+          imageInputRef.current.value = ""; // Limpiar input de imagen
+        }
+      } else {
+        console.error(
+          "Error al actualizar producto:",
+          res.status,
+          responseData
+        );
+      }
     } catch (error) {
-        console.error("Error inesperado al actualizar producto:", error);
+      console.error("Error inesperado al actualizar producto:", error);
     }
-};
-  
+  };
+
   const deleteProduct = async (productId) => {
     const token = sessionStorage.getItem("token");
     const res = await fetch(
@@ -303,6 +315,147 @@ function AdminPanel() {
     } else {
       const errorMessage = await res.text();
       console.error("Error al eliminar producto:", res.status, errorMessage);
+    }
+  };
+
+  //seccion de peliculas peiculas
+  const [movies, setMovies] = useState([]);
+  const [newMovie, setNewMovie] = useState({
+    name: "",
+    genre: "",
+    description: "",
+    dateTime: "",
+    image: null,
+  });
+  const [editingMovie, setEditingMovie] = useState(null);
+
+  useEffect(() => {
+    fetchMovies();
+  }, []);
+
+  const fetchMovies = async () => {
+    const token = sessionStorage.getItem("token");
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/movies`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setMovies(data);
+  };
+
+  const handleInputMovieChange = (e) => {
+    setNewMovie({ ...newMovie, [e.target.name]: e.target.value });
+  };
+
+  const handleImageMovieChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setNewMovie((prev) => ({ ...prev, image: file }));
+    } else {
+      setNewMovie((prev) => ({ ...prev, image: null }));
+    }
+  };
+
+  const addMovie = async (e) => {
+    e.preventDefault();
+    const token = sessionStorage.getItem("token");
+
+    const formData = new FormData();
+    formData.append("name", newMovie.name);
+    formData.append("genre", newMovie.genre);
+    formData.append("description", newMovie.description);
+    formData.append("dateTime", newMovie.dateTime);
+    if (newMovie.image) {
+      formData.append("image", newMovie.image);
+    }
+
+    console.log("FormData:", formData); // Debugging
+    for (var pair of formData.entries()) {
+      // Para debuggear el contenido del form data
+      console.log(pair[0] + ", " + pair[1]);
+    }
+
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/movies`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
+
+    if (res.ok) {
+      fetchMovies();
+      setNewMovie({
+        name: "",
+        genre: "",
+        description: "",
+        dateTime: "",
+        image: null,
+      });
+      document.getElementById("movie-image-input").value = "";
+    } else {
+      const errorText = await res.text();
+      console.error("Error al agregar película:", res.status, errorText);
+    }
+  };
+
+  const handleEditMovie = (movie) => {
+    setNewMovie({
+      name: movie.name || "",
+      genre: movie.genre || "",
+      description: movie.description || "",
+      dateTime: movie.dateTime ? movie.dateTime.split(".")[0] : "",
+    });
+    setEditingMovie(movie);
+  };
+
+  const updateMovie = async (e) => {
+    e.preventDefault();
+    if (!editingMovie) return;
+
+    const token = sessionStorage.getItem("token");
+    const formData = new FormData();
+    formData.append("name", newMovie.name);
+    formData.append("genre", newMovie.genre);
+    formData.append("description", newMovie.description);
+    formData.append("dateTime", newMovie.dateTime);
+    if (newMovie.image) {
+      formData.append("image", newMovie.image);
+    }
+
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/movies/${editingMovie._id}`,
+      {
+        method: "PUT",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      }
+    );
+
+    if (res.ok) {
+      fetchMovies();
+      setNewMovie({
+        name: "",
+        genre: "",
+        description: "",
+        dateTime: "",
+        image: null,
+      });
+      setEditingMovie(null);
+      document.getElementById("movie-image-input").value = "";
+    }
+  };
+
+  const deleteMovie = async (movieId) => {
+    const token = sessionStorage.getItem("token");
+    const res = await fetch(`http://localhost:5000/movies/${movieId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (res.ok) {
+      console.log("Película eliminada exitosamente");
+      fetchMovies();
+    } else {
+      const errorMessage = await res.text();
+      console.error("Error al eliminar película:", res.status, errorMessage);
     }
   };
 
@@ -479,6 +632,69 @@ function AdminPanel() {
           </ul>
         </div>
       )}
+
+      <div>
+        <h2>Administrar Películas</h2>
+        <form onSubmit={editingMovie ? updateMovie : addMovie}>
+          <input
+            type="text"
+            name="name"
+            value={newMovie.name}
+            onChange={handleInputMovieChange}
+          />
+          <input
+            type="text"
+            name="genre"
+            value={newMovie.genre}
+            onChange={handleInputMovieChange}
+          />
+          <input
+            type="text"
+            name="description"
+            value={newMovie.description}
+            onChange={handleInputMovieChange}
+          />
+          <input
+            type="datetime-local"
+            name="dateTime"
+            value={newMovie.dateTime}
+            onChange={handleInputMovieChange}
+          />
+          <input type="file" name="image" onChange={handleImageMovieChange} />
+          <button type="submit">Guardar</button>
+        </form>
+
+        <h3>Películas Agregadas</h3>
+        <ul>
+          {movies.map((movie) => (
+            <li key={movie._id}>
+              {movie.image && (
+                <img
+                  src={movie.image} // Usar la URL de Cloudinary directamente
+                  alt={movie.name}
+                  width="100"
+                />
+              )}
+              <h4>{movie.name}</h4>
+              <p>{movie.genre}</p>
+              <p>{movie.description}</p>
+              <p>{new Date(movie.dateTime).toLocaleString()}</p>
+              <button
+                className="icon-btn"
+                onClick={() => handleEditMovie(movie)}
+              >
+                <FaEdit size={15} />
+              </button>
+              <button
+                className="icon-btn"
+                onClick={() => deleteMovie(movie._id)}
+              >
+                <FaTrash size={15} />
+              </button>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
