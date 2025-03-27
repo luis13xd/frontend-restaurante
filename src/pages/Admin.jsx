@@ -42,7 +42,7 @@ function AdminPanel() {
   };
 
   const fetchProducts = async (categoryId) => {
-    selectedCategoryRef.current = categoryId; 
+    selectedCategoryRef.current = categoryId;
     if (!selectedCategory) setSelectedCategory(categoryId);
     const token = sessionStorage.getItem("token");
     const res = await fetch(
@@ -352,11 +352,6 @@ function AdminPanel() {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (editingMovie) {
-      setNewMovie((prev) => ({ ...prev, image: file, imageFile: file }));
-      return;
-    }
-
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "infusion2");
@@ -378,7 +373,7 @@ function AdminPanel() {
 
       const data = await res.json();
       if (data.secure_url) {
-        setNewMovie((prev) => ({ ...prev, image: data.secure_url }));
+        setNewMovie((prev) => ({ ...prev, image: data.secure_url })); // Guardar la URL de Cloudinary
       } else {
         console.error("Cloudinary no devolvió una URL segura:", data);
       }
@@ -389,7 +384,13 @@ function AdminPanel() {
 
   const addMovie = async (e) => {
     e.preventDefault();
-    if (!newMovie.name || !newMovie.genre || !newMovie.description || !newMovie.dateTime || !newMovie.image) {
+    if (
+      !newMovie.name ||
+      !newMovie.genre ||
+      !newMovie.description ||
+      !newMovie.dateTime ||
+      !newMovie.image
+    ) {
       alert("Por favor, completa todos los campos.");
       return;
     }
@@ -412,7 +413,13 @@ function AdminPanel() {
 
     if (res.ok) {
       fetchMovies();
-      setNewMovie({ name: "", genre: "", description: "", dateTime: "", image: null });
+      setNewMovie({
+        name: "",
+        genre: "",
+        description: "",
+        dateTime: "",
+        image: null,
+      });
       if (movieImageInputRef.current) movieImageInputRef.current.value = "";
     } else {
       const errorText = await res.text();
@@ -426,6 +433,7 @@ function AdminPanel() {
       genre: movie.genre || "",
       description: movie.description || "",
       dateTime: movie.dateTime ? movie.dateTime.split(".")[0] : "",
+      image: movie.image, // Asegúrate de que la URL de la imagen esté aquí
     });
     setEditingMovie(movie);
   };
@@ -433,47 +441,83 @@ function AdminPanel() {
   const updateMovie = async (e) => {
     e.preventDefault();
     if (!editingMovie) return;
-
+  
     const token = sessionStorage.getItem("token");
     const formData = new FormData();
     formData.append("name", newMovie.name);
     formData.append("genre", newMovie.genre);
     formData.append("description", newMovie.description);
     formData.append("dateTime", newMovie.dateTime);
-    if (newMovie.image) {
-      formData.append("image", newMovie.image);
-    }
-
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/movies/${editingMovie._id}`,
-      {
-        method: "PUT",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
+  
+    let imageUrl = newMovie.image; // Usar la imagen existente por defecto
+  
+    if (newMovie.imageFile) {
+      // Subir la nueva imagen a Cloudinary
+      const cloudinaryFormData = new FormData();
+      cloudinaryFormData.append("file", newMovie.imageFile);
+      cloudinaryFormData.append("upload_preset", "infusion2");
+  
+      try {
+        const cloudinaryRes = await fetch(
+          "https://api.cloudinary.com/v1_1/dntqcucm0/image/upload",
+          {
+            method: "POST",
+            body: cloudinaryFormData,
+          }
+        );
+  
+        if (!cloudinaryRes.ok) {
+          const errorData = await cloudinaryRes.json();
+          console.error("Error al subir imagen a Cloudinary:", errorData);
+          return;
+        }
+  
+        const cloudinaryData = await cloudinaryRes.json();
+        imageUrl = cloudinaryData.secure_url; // Obtener la nueva URL de la imagen
+        console.log("Nueva URL de Cloudinary:", imageUrl); // Log para depuración
+      } catch (error) {
+        console.error("Error inesperado al subir imagen:", error);
+        return;
       }
-    );
-
-    if (res.ok) {
-      fetchMovies();
-      setNewMovie({
-        name: "",
-        genre: "",
-        description: "",
-        dateTime: "",
-        image: null,
-      });
-      setEditingMovie(null);
-      document.getElementById("movie-image-input").value = "";
+    }
+  
+    formData.append("image", imageUrl); // Agregar la URL de la imagen al formData
+    console.log("FormData enviado:", formData); // Log para depuración
+  
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/movies/${editingMovie._id}`,
+        {
+          method: "PUT",
+          headers: { Authorization: `Bearer ${token}` },
+          body: formData, // Enviar FormData
+        }
+      );
+  
+      const responseData = await res.json(); // Obtener la respuesta como JSON
+      console.log("Respuesta del backend:", responseData); // Log para depuración
+  
+      if (res.ok) {
+        fetchMovies();
+        setNewMovie({ name: "", genre: "", description: "", dateTime: "", image: null });
+        setEditingMovie(null);
+        if (movieImageInputRef.current) movieImageInputRef.current.value = "";
+      } else {
+        const errorText = await res.text();
+        console.error("Error al actualizar película:", res.status, errorText);
+      }
+    } catch (error) {
+      console.error("Error inesperado al actualizar película:", error);
     }
   };
 
   const deleteMovie = async (movieId) => {
     const token = sessionStorage.getItem("token");
-    const res = await fetch(`http://localhost:5000/movies/${movieId}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/movies/${movieId}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-
+  
     if (res.ok) {
       console.log("Película eliminada exitosamente");
       fetchMovies();
@@ -661,18 +705,21 @@ function AdminPanel() {
         <h2>Administrar Películas</h2>
         <form onSubmit={editingMovie ? updateMovie : addMovie}>
           <input
+            placeholder="Nombre"
             type="text"
             name="name"
             value={newMovie.name}
             onChange={handleInputMovieChange}
           />
           <input
+            placeholder="Genero"
             type="text"
             name="genre"
             value={newMovie.genre}
             onChange={handleInputMovieChange}
           />
           <input
+            placeholder="Descripción"
             type="text"
             name="description"
             value={newMovie.description}
