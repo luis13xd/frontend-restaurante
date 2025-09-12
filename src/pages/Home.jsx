@@ -16,41 +16,79 @@ function Home() {
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
+  const [movies, setMovies] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   // Obtener categorías
   useEffect(() => {
     fetch(`${import.meta.env.VITE_API_URL}/public/categories`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error ${res.status}: ${res.statusText}`);
+        }
+        return res.json();
+      })
       .then((data) => {
+        console.log("Categorías obtenidas:", data); // Debug
         setCategories(data);
         if (data.length > 0) {
           setSelectedCategory(data[0]._id); // Establecer la primera categoría al cargar
         }
       })
-      .catch((err) => console.error("Error al obtener categorías:", err));
+      .catch((err) => {
+        console.error("Error al obtener categorías:", err);
+        setError("Error al cargar categorías");
+      });
   }, []);
 
   // Obtener productos de la categoría seleccionada
   useEffect(() => {
-    let url = `${import.meta.env.VITE_API_URL}/public/products`;
     if (selectedCategory) {
-      url += `?categoryId=${selectedCategory}`;
+      let url = `${import.meta.env.VITE_API_URL}/public/products?categoryId=${selectedCategory}`;
+      
+      console.log("Obteniendo productos de URL:", url); // Debug
+      
+      fetch(url)
+        .then((res) => {
+          if (!res.ok) {
+            throw new Error(`Error ${res.status}: ${res.statusText}`);
+          }
+          return res.json();
+        })
+        .then((data) => {
+          console.log("Productos obtenidos:", data); // Debug
+          setProducts(data);
+        })
+        .catch((err) => {
+          console.error("Error al obtener productos:", err);
+          setError("Error al cargar productos");
+        });
     }
-
-    fetch(url)
-      .then((res) => res.json())
-      .then((data) => setProducts(data))
-      .catch((err) => console.error("Error al obtener productos:", err));
   }, [selectedCategory]);
 
-
-  const [movies, setMovies] = useState([]);
-  // Obtener películas
+  // Obtener películas - CORREGIDO
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/movies/public`) // ✅ Esto es correcto
-      .then((res) => res.json())
-      .then((data) => setMovies(data))
-      .catch((err) => console.error("Error al obtener películas:", err));
+    const url = `${import.meta.env.VITE_API_URL}/public/movies`; // ✅ URL corregida
+    console.log("Obteniendo películas de URL:", url); // Debug
+    
+    fetch(url)
+      .then((res) => {
+        if (!res.ok) {
+          throw new Error(`Error ${res.status}: ${res.statusText}`);
+        }
+        return res.json();
+      })
+      .then((data) => {
+        console.log("Películas obtenidas:", data); // Debug
+        setMovies(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error al obtener películas:", err);
+        setError("Error al cargar películas");
+        setLoading(false);
+      });
   }, []);
 
   const sliderSettings = {
@@ -62,24 +100,50 @@ function Home() {
     autoplay: true,
     autoplaySpeed: 2000,
     fade: true,
+    adaptiveHeight: true, // Añadido para mejor responsive
   };
+
+  // Mostrar loading mientras se cargan los datos
+  if (loading) {
+    return (
+      <div className="loading-container">
+        <p>Cargando contenido...</p>
+      </div>
+    );
+  }
+
+  // Mostrar error si algo falla
+  if (error) {
+    return (
+      <div className="error-container">
+        <p>Error: {error}</p>
+        <button onClick={() => window.location.reload()}>
+          Reintentar
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div>
       <br />
-      <h2>Carta Infusión</h2>
+      <h2>Carta Infusión 1.0</h2>
 
       {/* Menú de categorías */}
       <div className="categories-menu">
-        {categories.map((category) => (
-          <button
-            key={category._id}
-            className={category._id === selectedCategory ? "active" : ""}
-            onClick={() => setSelectedCategory(category._id)}
-          >
-            {category.name}
-          </button>
-        ))}
+        {categories.length > 0 ? (
+          categories.map((category) => (
+            <button
+              key={category._id}
+              className={category._id === selectedCategory ? "active" : ""}
+              onClick={() => setSelectedCategory(category._id)}
+            >
+              {category.name}
+            </button>
+          ))
+        ) : (
+          <p>No hay categorías disponibles.</p>
+        )}
       </div>
 
       {/* Productos de la categoría seleccionada */}
@@ -94,6 +158,9 @@ function Home() {
                     src={product.image}
                     alt={product.name}
                     className="product-image"
+                    onError={(e) => {
+                      e.target.src = '/placeholder-product.jpg'; // Imagen por defecto
+                    }}
                   />
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
@@ -103,13 +170,21 @@ function Home() {
                   <div className="cart-controls">
                     {cartItem?.quantity > 0 && (
                       <>
-                        <button className="decrease-btn" onClick={() => removeFromCart(product._id)}>
+                        <button 
+                          className="decrease-btn" 
+                          onClick={() => removeFromCart(product._id)}
+                          aria-label={`Reducir cantidad de ${product.name}`}
+                        >
                           <FaMinus />
                         </button>
                         <span className="quantity">{cartItem.quantity}</span>
                       </>
                     )}
-                    <button className="increase-btn" onClick={() => addToCart(product)}>
+                    <button 
+                      className="increase-btn" 
+                      onClick={() => addToCart(product)}
+                      aria-label={`Agregar ${product.name} al carrito`}
+                    >
                       <FaPlus />
                     </button>
                   </div>
@@ -117,22 +192,27 @@ function Home() {
               </div>
             );
           })
-        ) : (
+        ) : selectedCategory ? (
           <p>No hay productos disponibles en esta categoría.</p>
+        ) : (
+          <p>Selecciona una categoría para ver los productos.</p>
         )}
       </div>
 
       {/* Sección de películas */}
       <h2 className="title">Cartelera de Cine</h2>
       <div className="slider-container">
-        <Slider {...sliderSettings}>
-          {movies.length > 0 ? (
-            movies.map((movie) => (
+        {movies.length > 0 ? (
+          <Slider {...sliderSettings}>
+            {movies.map((movie) => (
               <div key={movie._id} className="movie-slide">
                 <img
                   src={movie.image}
                   alt={movie.name}
                   className="movie-image"
+                  onError={(e) => {
+                    e.target.src = '/placeholder-movie.jpg'; // Imagen por defecto
+                  }}
                 />
                 <div className="movie-info">
                   <h3>{movie.name}</h3>
@@ -142,7 +222,13 @@ function Home() {
                   <p>{movie.description}</p>
                   <p>
                     <strong>Fecha y Hora:</strong>{" "}
-                    {new Date(movie.dateTime).toLocaleString()}
+                    {new Date(movie.dateTime).toLocaleString('es-ES', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit'
+                    })}
                   </p>
                   <p>
                     <strong>Lugar:</strong>{" "}
@@ -150,11 +236,13 @@ function Home() {
                   </p>
                 </div>
               </div>
-            ))
-          ) : (
-            <p>No hay películas disponibles.</p>
-          )}
-        </Slider>
+            ))}
+          </Slider>
+        ) : (
+          <div className="no-movies">
+            <p>No hay películas disponibles en este momento.</p>
+          </div>
+        )}
       </div>
 
       {/* Sección Nosotros */}
