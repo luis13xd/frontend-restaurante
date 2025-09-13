@@ -17,8 +17,11 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [movies, setMovies] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  
+  // Estados de loading independientes
+  const [categoriesLoading, setCategoriesLoading] = useState(true);
+  const [productsLoading, setProductsLoading] = useState(true);
+  const [moviesLoading, setMoviesLoading] = useState(true);
 
   // Obtener categorías
   useEffect(() => {
@@ -30,24 +33,24 @@ function Home() {
         return res.json();
       })
       .then((data) => {
-        console.log("Categorías obtenidas:", data); // Debug
+        console.log("Categorías obtenidas:", data);
         setCategories(data);
         if (data.length > 0) {
-          setSelectedCategory(data[0]._id); // Establecer la primera categoría al cargar
+          setSelectedCategory(data[0]._id);
         }
+        setCategoriesLoading(false);
       })
       .catch((err) => {
         console.error("Error al obtener categorías:", err);
-        setError("Error al cargar categorías");
+        setCategoriesLoading(false);
       });
   }, []);
 
   // Obtener productos de la categoría seleccionada
   useEffect(() => {
     if (selectedCategory) {
+      setProductsLoading(true);
       let url = `${import.meta.env.VITE_API_URL}/public/products?categoryId=${selectedCategory}`;
-      
-      console.log("Obteniendo productos de URL:", url); // Debug
       
       fetch(url)
         .then((res) => {
@@ -57,20 +60,20 @@ function Home() {
           return res.json();
         })
         .then((data) => {
-          console.log("Productos obtenidos:", data); // Debug
+          console.log("Productos obtenidos:", data);
           setProducts(data);
+          setProductsLoading(false);
         })
         .catch((err) => {
           console.error("Error al obtener productos:", err);
-          setError("Error al cargar productos");
+          setProductsLoading(false);
         });
     }
   }, [selectedCategory]);
 
-  // Obtener películas - CORREGIDO
+  // Obtener películas - Loading independiente
   useEffect(() => {
-    const url = `${import.meta.env.VITE_API_URL}/public/movies`; // ✅ URL corregida
-    console.log("Obteniendo películas de URL:", url); // Debug
+    const url = `${import.meta.env.VITE_API_URL}/public/movies`;
     
     fetch(url)
       .then((res) => {
@@ -80,46 +83,39 @@ function Home() {
         return res.json();
       })
       .then((data) => {
-        console.log("Películas obtenidas:", data); // Debug
+        console.log("Películas obtenidas:", data);
         setMovies(data);
-        setLoading(false);
+        setMoviesLoading(false);
       })
       .catch((err) => {
         console.error("Error al obtener películas:", err);
-        setError("Error al cargar películas");
-        setLoading(false);
+        setMoviesLoading(false);
       });
   }, []);
 
   const sliderSettings = {
     dots: true,
-    infinite: true,
+    infinite: movies.length > 1,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    autoplay: movies.length > 1,
+    autoplaySpeed: 3000,
     fade: true,
-    adaptiveHeight: true, // Añadido para mejor responsive
+    adaptiveHeight: true,
   };
 
-  // Mostrar loading mientras se cargan los datos
-  if (loading) {
+  // Solo mostrar loading general si categorías están cargando
+  if (categoriesLoading) {
     return (
-      <div className="loading-container">
-        <p>Cargando contenido...</p>
-      </div>
-    );
-  }
-
-  // Mostrar error si algo falla
-  if (error) {
-    return (
-      <div className="error-container">
-        <p>Error: {error}</p>
-        <button onClick={() => window.location.reload()}>
-          Reintentar
-        </button>
+      <div style={{ 
+        display: 'flex', 
+        justifyContent: 'center', 
+        alignItems: 'center', 
+        height: '200px',
+        fontSize: '18px'
+      }}>
+        <p>Cargando menú...</p>
       </div>
     );
   }
@@ -127,7 +123,7 @@ function Home() {
   return (
     <div>
       <br />
-      <h2>Carta Infusión 1.0</h2>
+      <h2>Carta Infusión</h2>
 
       {/* Menú de categorías */}
       <div className="categories-menu">
@@ -148,7 +144,16 @@ function Home() {
 
       {/* Productos de la categoría seleccionada */}
       <div className="products-container">
-        {products.length > 0 ? (
+        {productsLoading ? (
+          <div style={{ 
+            textAlign: 'center', 
+            padding: '40px',
+            fontSize: '16px',
+            color: '#666'
+          }}>
+            <p>Cargando productos...</p>
+          </div>
+        ) : products.length > 0 ? (
           products.map((product) => {
             const cartItem = cart.find((item) => item._id === product._id);
             return (
@@ -159,7 +164,7 @@ function Home() {
                     alt={product.name}
                     className="product-image"
                     onError={(e) => {
-                      e.target.src = '/placeholder-product.jpg'; // Imagen por defecto
+                      e.target.src = '/placeholder-product.jpg';
                     }}
                   />
                   <h3>{product.name}</h3>
@@ -192,17 +197,24 @@ function Home() {
               </div>
             );
           })
-        ) : selectedCategory ? (
-          <p>No hay productos disponibles en esta categoría.</p>
         ) : (
-          <p>Selecciona una categoría para ver los productos.</p>
+          <p>No hay productos disponibles en esta categoría.</p>
         )}
       </div>
 
       {/* Sección de películas */}
       <h2 className="title">Cartelera de Cine</h2>
       <div className="slider-container">
-        {movies.length > 0 ? (
+        {moviesLoading ? (
+          <div style={{ 
+            textAlign: 'center', 
+            padding: '40px',
+            fontSize: '16px',
+            color: '#666'
+          }}>
+            <p>Cargando cartelera...</p>
+          </div>
+        ) : movies.length > 0 ? (
           <Slider {...sliderSettings}>
             {movies.map((movie) => (
               <div key={movie._id} className="movie-slide">
@@ -211,7 +223,7 @@ function Home() {
                   alt={movie.name}
                   className="movie-image"
                   onError={(e) => {
-                    e.target.src = '/placeholder-movie.jpg'; // Imagen por defecto
+                    e.target.src = '/placeholder-movie.jpg';
                   }}
                 />
                 <div className="movie-info">
@@ -239,13 +251,16 @@ function Home() {
             ))}
           </Slider>
         ) : (
-          <div className="no-movies">
+          <div className="no-movies" style={{ 
+            textAlign: 'center', 
+            padding: '40px'
+          }}>
             <p>No hay películas disponibles en este momento.</p>
           </div>
         )}
       </div>
 
-      {/* Sección Nosotros */}
+      {/* Sección Nosotros - SIEMPRE VISIBLE */}
       <section id="nosotros" className="nosotros-section">
         <motion.h2
           initial={{ opacity: 0, y: -30 }}
