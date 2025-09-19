@@ -447,7 +447,7 @@ li span:hover {
   }
   
   .movie-image {
-    width: 100%;
+    width: 97%;
     max-height: 400px;
     object-fit: cover;
     border-radius: 10px;
