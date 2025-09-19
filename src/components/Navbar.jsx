@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { FaShoppingCart, FaSignInAlt, FaUserPlus } from "react-icons/fa";
+// import { FaShoppingCart, FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import CartModal from "./CartModal";
 import "./Navbar.css";
@@ -38,6 +39,13 @@ function Navbar() {
     }
   };
 
+  const scrollToUbication = () => {
+    const section = document.getElementById("ubication");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <nav className="navbar">
       <Link to="/" className="logo">
@@ -59,6 +67,9 @@ function Navbar() {
         <a onClick={scrollToNosotros} style={{ cursor: "pointer" }}>
           Nosotros
         </a>
+        <a onClick={scrollToUbication} style={{ cursor: "pointer" }}>
+          Ubicación
+        </a>
       </div>
 
       <div className="cart-icon" onClick={() => setIsCartOpen(true)}>
@@ -66,14 +77,14 @@ function Navbar() {
         {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
       </div>
 
-      <div className="auth-links">
+      {/* <div className="auth-links">
         <Link to="/login">
           <FaSignInAlt />
         </Link>
         <Link to="/register">
           <FaUserPlus />
         </Link>
-      </div>
+      </div> */}
       {isCartOpen && <CartModal onClose={() => setIsCartOpen(false)} />}
     </nav>
   );

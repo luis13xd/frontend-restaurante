@@ -3,6 +3,7 @@ import About from "../components/About";
 import RestaurantHero from "../components/RestaurantHero";
 import MenuSection from "../components/MenuSection";
 import MovieSection from "../components/MovieSection";
+import LocationSection from "../components/LocationSection";
 
 function Home() {
 
@@ -17,8 +18,10 @@ function Home() {
 
       <About />
 
+      <LocationSection />
+
       <Footer />
-      
+
     </div>
   );
 }
