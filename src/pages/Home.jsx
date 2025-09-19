@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Footer from "../components/Footer";
 import About from "../components/About";
+import RestaurantHero from "../components/RestaurantHero";
 
 function Home() {
   const { cart, addToCart, removeFromCart } = useCart();
@@ -46,7 +47,9 @@ function Home() {
   useEffect(() => {
     if (selectedCategory) {
       setProductsLoading(true);
-      let url = `${import.meta.env.VITE_API_URL}/public/products?categoryId=${selectedCategory}`;
+      let url = `${
+        import.meta.env.VITE_API_URL
+      }/public/products?categoryId=${selectedCategory}`;
       fetch(url)
         .then((res) => {
           if (!res.ok) {
@@ -101,13 +104,21 @@ function Home() {
 
   return (
     <div>
-      <br />
-      <h2>Carta Infusión</h2>
       
+      <RestaurantHero />
+
       {/* Menú de categorías */}
+      <h2>Carta Infusión</h2>
       <div className="categories-menu">
         {categoriesLoading ? (
-          <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#666' }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "20px",
+              fontSize: "16px",
+              color: "#666",
+            }}
+          >
             <p>Cargando menú...</p>
           </div>
         ) : categories.length > 0 ? (
@@ -128,7 +139,14 @@ function Home() {
       {/* Productos de la categoría seleccionada */}
       <div className="products-container">
         {productsLoading ? (
-          <div style={{ textAlign: 'center', padding: '40px', fontSize: '16px', color: '#666' }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "40px",
+              fontSize: "16px",
+              color: "#666",
+            }}
+          >
             <p>Cargando productos...</p>
           </div>
         ) : products.length > 0 ? (
@@ -142,13 +160,15 @@ function Home() {
                     alt={product.name}
                     className="product-image"
                     onError={(e) => {
-                      e.target.src = '/placeholder-product.jpg';
+                      e.target.src = "/placeholder-product.jpg";
                     }}
                   />
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
-                  <p><strong>${product.price}</strong></p>
-                  
+                  <p>
+                    <strong>${product.price}</strong>
+                  </p>
+
                   {/* Controles de carrito */}
                   <div className="cart-controls">
                     {cartItem?.quantity > 0 && (
@@ -184,7 +204,14 @@ function Home() {
       <h2 className="title">Cartelera de Cine</h2>
       <div className="slider-container">
         {moviesLoading ? (
-          <div style={{ textAlign: 'center', padding: '40px', fontSize: '16px', color: '#666' }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "40px",
+              fontSize: "16px",
+              color: "#666",
+            }}
+          >
             <p>Cargando cartelera...</p>
           </div>
         ) : movies.length > 0 ? (
@@ -196,7 +223,7 @@ function Home() {
                   alt={movie.name}
                   className="movie-image"
                   onError={(e) => {
-                    e.target.src = '/placeholder-movie.jpg';
+                    e.target.src = "/placeholder-movie.jpg";
                   }}
                 />
                 <div className="movie-info">
@@ -207,24 +234,26 @@ function Home() {
                   <p>{movie.description}</p>
                   <p>
                     <strong>Fecha y Hora:</strong>{" "}
-                    {new Date(movie.dateTime).toLocaleString('es-ES', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit'
+                    {new Date(movie.dateTime).toLocaleString("es-ES", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
                     })}
                   </p>
                   <p>
-                    <strong>Lugar:</strong>{" "}
-                    Restaurante Infusión
+                    <strong>Lugar:</strong> Restaurante Infusión
                   </p>
                 </div>
               </div>
             ))}
           </Slider>
         ) : (
-          <div className="no-movies" style={{ textAlign: 'center', padding: '40px' }}>
+          <div
+            className="no-movies"
+            style={{ textAlign: "center", padding: "40px" }}
+          >
             <p>No hay películas disponibles en este momento.</p>
           </div>
         )}
@@ -234,7 +263,6 @@ function Home() {
       <About />
 
       <Footer />
-      
     </div>
   );
 }
