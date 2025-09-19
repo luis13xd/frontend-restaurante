@@ -9,14 +9,11 @@
   width: 100%;
   z-index: 1000;
   
-  /* Fondo degradado semitransparente */
-  background: linear-gradient(
-    to bottom,
-    rgba(245, 245, 245, 1) 0%,    
-    rgba(245, 245, 245, 0.959)60%, 
-    rgba(245, 245, 245, 0.888) 80%,  
-    rgba(245, 245, 245, 0.788) 90%  
-  );
+  /* Fondo sólido con transparencia controlada */
+  background-color: rgba(245, 245, 245, 0.95);
+  
+  /* Borrar inferior con degradado */
+  border-bottom: 1px solid rgba(245, 245, 245, 0.3);
   
   /* Padding y altura */
   padding: 12px 20px;
@@ -29,9 +26,25 @@
   color: rgb(49, 49, 49);
 }
 
+/* Crear el efecto degradado con un pseudo-elemento */
+.navbar::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 20px;
+  background: linear-gradient(
+    to bottom,
+    rgba(245, 245, 245, 0) 0%,
+    rgba(245, 245, 245, 0.1) 50%,
+    rgba(245, 245, 245, 0.05) 100%
+  );
+  pointer-events: none;
+}
+
 .logo img {
   height: 40px;
-  /* Asegurar que el logo sea visible */
   filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.1));
 }
 
@@ -53,7 +66,6 @@
   color: rgb(49, 49, 49);
   font-size: 18px;
   font-weight: 500;
-  /* Mejor legibilidad sobre fondo semitransparente */
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
 }
@@ -71,7 +83,6 @@
   font-size: 1.5rem;
   color: rgb(49, 49, 49);
   transition: all 0.3s ease;
-  /* Mejor visibilidad */
   filter: drop-shadow(0 1px 2px rgba(255, 255, 255, 0.8));
 }
 
@@ -142,20 +153,4 @@
   .logo img {
     height: 30px;
   }
-}
-
-/* Animación suave cuando aparece el navbar */
-@keyframes slideDown {
-  from {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateY(0);
-    opacity: 1;
-  }
-}
-
-.navbar {
-  animation: slideDown 0.3s ease-out;
 }
