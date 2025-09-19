@@ -4,12 +4,8 @@ import { useCart } from "../context/CartContext";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-
-import { motion } from "framer-motion";
-import nosotrosImg1 from "../assets/nosotrosImg1.jpeg";
-import nosotrosImg2 from "../assets/nosotrosImg2.jpeg";
-import nosotrosImg3 from "../assets/nosotrosImg3.jpeg";
 import Footer from "../components/Footer";
+import About from "../components/About";
 
 function Home() {
   const { cart, addToCart, removeFromCart } = useCart();
@@ -17,7 +13,7 @@ function Home() {
   const [products, setProducts] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [movies, setMovies] = useState([]);
-  
+
   // Estados de loading independientes
   const [categoriesLoading, setCategoriesLoading] = useState(true);
   const [productsLoading, setProductsLoading] = useState(true);
@@ -51,7 +47,6 @@ function Home() {
     if (selectedCategory) {
       setProductsLoading(true);
       let url = `${import.meta.env.VITE_API_URL}/public/products?categoryId=${selectedCategory}`;
-      
       fetch(url)
         .then((res) => {
           if (!res.ok) {
@@ -74,7 +69,6 @@ function Home() {
   // Obtener películas - Loading independiente
   useEffect(() => {
     const url = `${import.meta.env.VITE_API_URL}/public/movies`;
-    
     fetch(url)
       .then((res) => {
         if (!res.ok) {
@@ -105,29 +99,18 @@ function Home() {
     adaptiveHeight: true,
   };
 
-  // Solo mostrar loading general si categorías están cargando
-  if (categoriesLoading) {
-    return (
-      <div style={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '200px',
-        fontSize: '18px'
-      }}>
-        <p>Cargando menú...</p>
-      </div>
-    );
-  }
-
   return (
     <div>
       <br />
       <h2>Carta Infusión</h2>
-
+      
       {/* Menú de categorías */}
       <div className="categories-menu">
-        {categories.length > 0 ? (
+        {categoriesLoading ? (
+          <div style={{ textAlign: 'center', padding: '20px', fontSize: '16px', color: '#666' }}>
+            <p>Cargando menú...</p>
+          </div>
+        ) : categories.length > 0 ? (
           categories.map((category) => (
             <button
               key={category._id}
@@ -145,12 +128,7 @@ function Home() {
       {/* Productos de la categoría seleccionada */}
       <div className="products-container">
         {productsLoading ? (
-          <div style={{ 
-            textAlign: 'center', 
-            padding: '40px',
-            fontSize: '16px',
-            color: '#666'
-          }}>
+          <div style={{ textAlign: 'center', padding: '40px', fontSize: '16px', color: '#666' }}>
             <p>Cargando productos...</p>
           </div>
         ) : products.length > 0 ? (
@@ -175,8 +153,8 @@ function Home() {
                   <div className="cart-controls">
                     {cartItem?.quantity > 0 && (
                       <>
-                        <button 
-                          className="decrease-btn" 
+                        <button
+                          className="decrease-btn"
                           onClick={() => removeFromCart(product._id)}
                           aria-label={`Reducir cantidad de ${product.name}`}
                         >
@@ -185,8 +163,8 @@ function Home() {
                         <span className="quantity">{cartItem.quantity}</span>
                       </>
                     )}
-                    <button 
-                      className="increase-btn" 
+                    <button
+                      className="increase-btn"
                       onClick={() => addToCart(product)}
                       aria-label={`Agregar ${product.name} al carrito`}
                     >
@@ -206,12 +184,7 @@ function Home() {
       <h2 className="title">Cartelera de Cine</h2>
       <div className="slider-container">
         {moviesLoading ? (
-          <div style={{ 
-            textAlign: 'center', 
-            padding: '40px',
-            fontSize: '16px',
-            color: '#666'
-          }}>
+          <div style={{ textAlign: 'center', padding: '40px', fontSize: '16px', color: '#666' }}>
             <p>Cargando cartelera...</p>
           </div>
         ) : movies.length > 0 ? (
@@ -251,72 +224,17 @@ function Home() {
             ))}
           </Slider>
         ) : (
-          <div className="no-movies" style={{ 
-            textAlign: 'center', 
-            padding: '40px'
-          }}>
+          <div className="no-movies" style={{ textAlign: 'center', padding: '40px' }}>
             <p>No hay películas disponibles en este momento.</p>
           </div>
         )}
       </div>
 
-      {/* Sección Nosotros - SIEMPRE VISIBLE */}
-      <section id="nosotros" className="nosotros-section">
-        <motion.h2
-          initial={{ opacity: 0, y: -30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          Sobre Nosotros
-        </motion.h2>
-        <motion.p
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1 }}
-        >
-          En Infusión Mística, fusionamos ingredientes naturales con la esencia
-          del bienestar. Cada taza es una experiencia sensorial única.
-        </motion.p>
+      {/* Componentes que siempre se muestran */}
+      <About />
 
-        <div className="nosotros-grid">
-          <motion.div
-            className="nosotros-card"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={nosotrosImg1} alt="Historia" />
-            <h3>Nuestra Historia</h3>
-            <p>
-              Desde nuestros inicios, nos dedicamos a seleccionar las mejores
-              hierbas y especias.
-            </p>
-          </motion.div>
-
-          <motion.div
-            className="nosotros-card"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={nosotrosImg2} alt="Misión" />
-            <h3>Nuestra Misión</h3>
-            <p>Brindar infusiones únicas que fortalezcan cuerpo y alma.</p>
-          </motion.div>
-
-          <motion.div
-            className="nosotros-card"
-            whileHover={{ scale: 1.05 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={nosotrosImg3} alt="Compromiso" />
-            <h3>Compromiso</h3>
-            <p>
-              100% ingredientes naturales, cultivados con respeto a la
-              naturaleza.
-            </p>
-          </motion.div>
-        </div>
-      </section>
       <Footer />
+      
     </div>
   );
 }
