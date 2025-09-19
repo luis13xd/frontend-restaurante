@@ -284,68 +284,7 @@ li span:hover {
     background-color: darkgreen;
   }
   
-  /*nosotros*/
-  .nosotros-section {
-    margin-top: 50px;
-    padding: 40px;
-    background-color: #f8f8f8;
-    text-align: center;
-}
-
-.nosotros-section {
-    margin-top: 80px;
-    padding: 50px 20px;
-    background: linear-gradient(to bottom, #2a2a2a, #1a1a1a);
-    text-align: center;
-    color: white;
-  }
   
-  .nosotros-section h2 {
-    font-size: 2.5rem;
-    margin-bottom: 20px;
-  }
-  
-  .nosotros-section p {
-    font-size: 1.2rem;
-    max-width: 800px;
-    margin: 0 auto 40px;
-  }
-  
-  .nosotros-grid {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-  }
-  
-  .nosotros-card {
-    background: rgba(255, 255, 255, 0.1);
-    padding: 20px;
-    border-radius: 10px;
-    text-align: center;
-    width: 300px;
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  .nosotros-card img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  .nosotros-card h3 {
-    margin-top: 15px;
-    font-size: 1.5rem;
-  }
-  
-  .nosotros-card p {
-    font-size: 1rem;
-    margin-top: 10px;
-  }
-  
-
-
 
   /*login*/
   /* Centra el formulario en la pantalla */

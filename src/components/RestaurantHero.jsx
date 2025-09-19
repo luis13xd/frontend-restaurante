@@ -3,7 +3,7 @@ import home from '../assets/home.jpg';
 
 const RestaurantHero = () => {
   return (
-    <div className="restaurant-hero">
+    <div className="restaurant-hero" id='homeImage'>
       <img 
         src={home}
         alt="Restaurante Infusión" 

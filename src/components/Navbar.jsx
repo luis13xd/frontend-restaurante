@@ -10,6 +10,27 @@ function Navbar() {
   const { cart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
+  const scrollToHome = () => {
+    const section = document.getElementById("homeImage");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToCarta = () => {
+    const section = document.getElementById("cartaRestaurant");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
+  const scrollToCine = () => {
+    const section = document.getElementById("cine");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const scrollToNosotros = () => {
     const section = document.getElementById("nosotros");
     if (section) {
@@ -24,14 +45,26 @@ function Navbar() {
       </Link>
 
       <div className="nav-links">
-        <Link to="/">Inicio</Link>
-        <a onClick={scrollToNosotros} style={{ cursor: "pointer" }}>Nosotros</a>
+        <Link to="/">
+          <a onClick={scrollToHome} style={{ cursor: "pointer" }}>
+            Inicio
+          </a>
+        </Link>
+        <a onClick={scrollToCarta} style={{ cursor: "pointer" }}>
+          Carta
+        </a>
+        <a onClick={scrollToCine} style={{ cursor: "pointer" }}>
+          Cine
+        </a>
+        <a onClick={scrollToNosotros} style={{ cursor: "pointer" }}>
+          Nosotros
+        </a>
       </div>
 
       <div className="cart-icon" onClick={() => setIsCartOpen(true)}>
-          <FaShoppingCart />
-          {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
-        </div>
+        <FaShoppingCart />
+        {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
+      </div>
 
       <div className="auth-links">
         <Link to="/login">
