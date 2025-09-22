@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import "./MovieSection.css";
 
 function MovieSection() {
   const [movies, setMovies] = useState([]);
@@ -36,43 +37,39 @@ function MovieSection() {
     slidesToShow: 1,
     slidesToScroll: 1,
     autoplay: movies.length > 1,
-    autoplaySpeed: 3000,
+    autoplaySpeed: 4000,
     fade: true,
-    adaptiveHeight: true,
+    adaptiveHeight: false,
+    arrows: true,
   };
 
   return (
     <div className="movie-section" id="cine">
-      <br />
-      <br /> 
-      <br />
-
       <h2>Cartelera de Cine</h2>
+      
       {/* Slider de películas */}
       <div className="slider-container">
         {moviesLoading ? (
-          <div
-            style={{
-              textAlign: "center",
-              padding: "40px",
-              fontSize: "16px",
-              color: "#666",
-            }}
-          >
+          <div className="loading-message">
             <p>Cargando cartelera...</p>
           </div>
         ) : movies.length > 0 ? (
           <Slider {...sliderSettings}>
             {movies.map((movie) => (
               <div key={movie._id} className="movie-slide">
-                <img
-                  src={movie.image}
-                  alt={movie.name}
-                  className="movie-image"
-                  onError={(e) => {
-                    e.target.src = "/placeholder-movie.jpg";
-                  }}
-                />
+                {/* Contenedor de la imagen */}
+                <div className="movie-image-container">
+                  <img
+                    src={movie.image}
+                    alt={movie.name}
+                    className="movie-image"
+                    onError={(e) => {
+                      e.target.src = "/placeholder-movie.jpg";
+                    }}
+                  />
+                </div>
+                
+                {/* Información de la película */}
                 <div className="movie-info">
                   <h3>{movie.name}</h3>
                   <p>
@@ -97,10 +94,7 @@ function MovieSection() {
             ))}
           </Slider>
         ) : (
-          <div
-            className="no-movies"
-            style={{ textAlign: "center", padding: "40px" }}
-          >
+          <div className="no-movies">
             <p>No hay películas disponibles en este momento.</p>
           </div>
         )}

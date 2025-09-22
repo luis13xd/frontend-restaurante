@@ -154,3 +154,29 @@
     height: 30px;
   }
 }
+
+@media (max-width: 340px) {
+  .navbar {
+    padding: 8px 6px;
+    height: 50px;
+  }
+  
+  .nav-links {
+    gap: 6px;
+  }
+  
+  .nav-links a,
+  .auth-links a {
+    font-size: 12px;
+    font-weight: bold;
+  }
+  
+  .auth-links {
+    gap: 5px;
+    font-size: 14px;
+  }
+  
+  .logo img {
+    height: 25px;
+  }
+}

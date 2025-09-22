@@ -157,6 +157,7 @@ function MenuSection() {
           <p>No hay productos disponibles en esta categoría.</p>
         )}
       </div>
+      <br /><br />
     </div>
   );
 }

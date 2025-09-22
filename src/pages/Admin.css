@@ -106,8 +106,7 @@ li span:hover {
     background-color: rgb(215, 215, 215);
 }
 
-
-/*------------------------------------    Formulario categorias     --------------------------------*/
+/*------------------------------------    Admin menu     --------------------------------*/
 .admin-menu {
     display: flex;
     justify-content: space-between;
@@ -137,7 +136,6 @@ li span:hover {
 .categories-menu ul {
     display: flex;
 }
-
 
 /*------------------------------------    Formulario categorias     --------------------------------*/
 
@@ -208,7 +206,6 @@ li span:hover {
     justify-content: center; /* Centra horizontalmente */
     flex-wrap: wrap; /* Permite que los botones se ajusten si hay muchos */
 }
-
 
 .categories-menu button {
     padding: 6px 12px;
@@ -284,10 +281,8 @@ li span:hover {
     background-color: darkgreen;
   }
   
-  
-
-  /*login*/
-  /* Centra el formulario en la pantalla */
+/*------------------------------------    Login     --------------------------------*/
+/* Centra el formulario en la pantalla */
 .login-container {
     display: flex;
     justify-content: center;
@@ -357,42 +352,3 @@ li span:hover {
     outline: none;
     background: rgba(255, 255, 255, 0.3);
   }
-
-  
-
-  /*peliculassssssssssssssssssss*/
-  .title {
-    text-align: center;
-    font-size: 2rem;
-    margin-bottom: 20px;
-  }
-  
-  .slider-container {
-    width: 80%;
-    margin: 0 auto;
-    position: relative;
-  }
-  
-  .movie-slide {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
-    background: #111;
-    color: white;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(255, 255, 255, 0.2);
-  }
-  
-  .movie-image {
-    width: 97%;
-    max-height: 400px;
-    object-fit: cover;
-    border-radius: 10px;
-  }
-  
-  .movie-info {
-    margin-top: 15px;
-  }
-  
