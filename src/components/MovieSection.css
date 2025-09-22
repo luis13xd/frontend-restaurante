@@ -172,11 +172,11 @@
 }
 
 .movie-section .slick-prev {
-    left: -25px;
+    left: -15px;
 }
 
 .movie-section .slick-next {
-    right: -25px;
+    right: -15px;
 }
 
 /* Responsive Design */

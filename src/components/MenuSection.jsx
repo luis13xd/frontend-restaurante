@@ -59,7 +59,15 @@ function MenuSection() {
   }, [selectedCategory]);
 
   return (
-    <div className="menu-section" id="cartaRestaurant">
+    <div
+      className="menu-section"
+      id="cartaRestaurant"
+      style={{
+        backgroundColor: "#fffdfdff",
+        backgroundImage: "radial-gradient(#ffcc80 1px, transparent 1px)",
+        backgroundSize: "20px 20px",
+      }}
+    >
       <br />
       <br />
       <br />
@@ -124,7 +132,13 @@ function MenuSection() {
                   <h3>{product.name}</h3>
                   <p>{product.description}</p>
                   <p>
-                    <strong>${product.price}</strong>
+                    <strong>
+                      {product.price.toLocaleString("es-CO", {
+                        style: "currency",
+                        currency: "COP",
+                        minimumFractionDigits: 0,
+                      })}
+                    </strong>
                   </p>
 
                   {/* Controles de carrito */}
@@ -157,7 +171,8 @@ function MenuSection() {
           <p>No hay productos disponibles en esta categoría.</p>
         )}
       </div>
-      <br /><br />
+      <br />
+      <br />
     </div>
   );
 }

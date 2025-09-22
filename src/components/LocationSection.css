@@ -1,7 +1,9 @@
 /* LocationSection.css */
 .location-section {
   padding: 60px 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background-color: #e8f3ff;
+  background-image: radial-gradient(#05315d 0.5px, transparent 0.5px);
+  background-size: 20px 20px;
   margin: 0;
 }
 

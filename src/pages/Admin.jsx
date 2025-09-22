@@ -441,22 +441,22 @@ function AdminPanel() {
   const updateMovie = async (e) => {
     e.preventDefault();
     if (!editingMovie) return;
-  
+
     const token = sessionStorage.getItem("token");
     const formData = new FormData();
     formData.append("name", newMovie.name);
     formData.append("genre", newMovie.genre);
     formData.append("description", newMovie.description);
     formData.append("dateTime", newMovie.dateTime);
-  
+
     let imageUrl = newMovie.image; // Usar la imagen existente por defecto
-  
+
     if (newMovie.imageFile) {
       // Subir la nueva imagen a Cloudinary
       const cloudinaryFormData = new FormData();
       cloudinaryFormData.append("file", newMovie.imageFile);
       cloudinaryFormData.append("upload_preset", "infusion2");
-  
+
       try {
         const cloudinaryRes = await fetch(
           "https://api.cloudinary.com/v1_1/dntqcucm0/image/upload",
@@ -465,13 +465,13 @@ function AdminPanel() {
             body: cloudinaryFormData,
           }
         );
-  
+
         if (!cloudinaryRes.ok) {
           const errorData = await cloudinaryRes.json();
           console.error("Error al subir imagen a Cloudinary:", errorData);
           return;
         }
-  
+
         const cloudinaryData = await cloudinaryRes.json();
         imageUrl = cloudinaryData.secure_url; // Obtener la nueva URL de la imagen
         console.log("Nueva URL de Cloudinary:", imageUrl); // Log para depuración
@@ -480,10 +480,10 @@ function AdminPanel() {
         return;
       }
     }
-  
+
     formData.append("image", imageUrl); // Agregar la URL de la imagen al formData
     console.log("FormData enviado:", formData); // Log para depuración
-  
+
     try {
       const res = await fetch(
         `${import.meta.env.VITE_API_URL}/movies/${editingMovie._id}`,
@@ -493,13 +493,19 @@ function AdminPanel() {
           body: formData, // Enviar FormData
         }
       );
-  
+
       const responseData = await res.json(); // Obtener la respuesta como JSON
       console.log("Respuesta del backend:", responseData); // Log para depuración
-  
+
       if (res.ok) {
         fetchMovies();
-        setNewMovie({ name: "", genre: "", description: "", dateTime: "", image: null });
+        setNewMovie({
+          name: "",
+          genre: "",
+          description: "",
+          dateTime: "",
+          image: null,
+        });
         setEditingMovie(null);
         if (movieImageInputRef.current) movieImageInputRef.current.value = "";
       } else {
@@ -513,11 +519,14 @@ function AdminPanel() {
 
   const deleteMovie = async (movieId) => {
     const token = sessionStorage.getItem("token");
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/movies/${movieId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/movies/${movieId}`,
+      {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+
     if (res.ok) {
       console.log("Película eliminada exitosamente");
       fetchMovies();
@@ -666,7 +675,12 @@ function AdminPanel() {
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
                 <p>
-                  <strong>Precio:</strong> ${product.price}
+                  <strong>Precio:</strong>{" "}
+                  {product.price.toLocaleString("es-CO", {
+                    style: "currency",
+                    currency: "COP",
+                    minimumFractionDigits: 0,
+                  })}
                 </p>
 
                 <div>
