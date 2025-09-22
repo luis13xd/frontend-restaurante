@@ -68,12 +68,14 @@
   font-weight: 500;
   text-shadow: 0 1px 2px rgba(255, 255, 255, 0.8);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .auth-links a:hover,
 .nav-links a:hover {
   color: #000000;
   transform: translateY(-1px);
+  
 }
 
 /* Carro de compras */
@@ -103,6 +105,12 @@
   font-weight: bold;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
+
+.nav-links a.active {
+  font-weight: bold;
+  color: #000; /* se diferencia de las demás */
+}
+
 
 /* Responsive para móviles */
 @media (max-width: 768px) {

@@ -11,38 +11,13 @@ function Navbar() {
   const { cart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
 
-  const scrollToHome = () => {
-    const section = document.getElementById("homeImage");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+const [active, setActive] = useState("inicio");
 
-  const scrollToCarta = () => {
-    const section = document.getElementById("cartaRestaurant");
+  const handleClick = (sectionId, sectionName) => {
+    const section = document.getElementById(sectionId);
     if (section) {
       section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const scrollToCine = () => {
-    const section = document.getElementById("cine");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const scrollToNosotros = () => {
-    const section = document.getElementById("nosotros");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const scrollToUbication = () => {
-    const section = document.getElementById("ubication");
-    if (section) {
-      section.scrollIntoView({ behavior: "smooth" });
+      setActive(sectionName);
     }
   };
 
@@ -53,21 +28,34 @@ function Navbar() {
       </Link>
 
       <div className="nav-links">
-        <Link to="/">
-          <a onClick={scrollToHome} style={{ cursor: "pointer" }}>
-            Inicio
-          </a>
-        </Link>
-        <a onClick={scrollToCarta} style={{ cursor: "pointer" }}>
+        <a
+          onClick={() => handleClick("homeImage", "inicio")}
+          className={active === "inicio" ? "active" : ""}
+        >
+          Inicio
+        </a>
+        <a
+          onClick={() => handleClick("cartaRestaurant", "carta")}
+          className={active === "carta" ? "active" : ""}
+        >
           Carta
         </a>
-        <a onClick={scrollToCine} style={{ cursor: "pointer" }}>
+        <a
+          onClick={() => handleClick("cine", "cine")}
+          className={active === "cine" ? "active" : ""}
+        >
           Cine
         </a>
-        <a onClick={scrollToNosotros} style={{ cursor: "pointer" }}>
+        <a
+          onClick={() => handleClick("nosotros", "nosotros")}
+          className={active === "nosotros" ? "active" : ""}
+        >
           Nosotros
         </a>
-        <a onClick={scrollToUbication} style={{ cursor: "pointer" }}>
+        <a
+          onClick={() => handleClick("ubication", "ubicacion")}
+          className={active === "ubicacion" ? "active" : ""}
+        >
           Ubicación
         </a>
       </div>
