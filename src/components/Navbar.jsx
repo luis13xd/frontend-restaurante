@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
-// import { FaShoppingCart, FaSignInAlt, FaUserPlus } from "react-icons/fa";
+import { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
 import CartModal from "./CartModal";
@@ -10,8 +9,28 @@ import logo from "../assets/logo.jpeg";
 function Navbar() {
   const { cart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [active, setActive] = useState("inicio");
 
-const [active, setActive] = useState("inicio");
+  useEffect(() => {
+    const sections = document.querySelectorAll("section, div[id]");
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActive(entry.target.id);
+          }
+        });
+      },
+      { threshold: 0.5 } 
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    return () => {
+      sections.forEach((section) => observer.unobserve(section));
+    };
+  }, []);
 
   const handleClick = (sectionId, sectionName) => {
     const section = document.getElementById(sectionId);
@@ -30,13 +49,13 @@ const [active, setActive] = useState("inicio");
       <div className="nav-links">
         <a
           onClick={() => handleClick("homeImage", "inicio")}
-          className={active === "inicio" ? "active" : ""}
+          className={active === "homeImage" ? "active" : ""}
         >
           Inicio
         </a>
         <a
           onClick={() => handleClick("cartaRestaurant", "carta")}
-          className={active === "carta" ? "active" : ""}
+          className={active === "cartaRestaurant" ? "active" : ""}
         >
           Carta
         </a>
@@ -54,7 +73,7 @@ const [active, setActive] = useState("inicio");
         </a>
         <a
           onClick={() => handleClick("ubication", "ubicacion")}
-          className={active === "ubicacion" ? "active" : ""}
+          className={active === "ubication" ? "active" : ""}
         >
           Ubicación
         </a>
