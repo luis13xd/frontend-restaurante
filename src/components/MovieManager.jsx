@@ -256,6 +256,7 @@ function MovieManager() {
           ref={movieImageInputRef}
           onChange={handleImageMovieChange}
         />
+        <br />
         <button type="submit">
           {editingMovie ? "Actualizar Película" : "Agregar Película"}
         </button>

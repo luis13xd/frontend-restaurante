@@ -5,18 +5,13 @@
   overflow-x: auto;
   padding: 5px 10px;
   white-space: nowrap;
+  margin: 10px auto;
+  justify-content: center;
+  flex-wrap: wrap;
 }
 
 .categories-menu ul {
   display: flex;
-}
-
-.categories-menu {
-  display: flex;
-  gap: 10px;
-  margin: 10px auto;
-  justify-content: center;
-  flex-wrap: wrap;
 }
 
 .categories-menu button {
@@ -31,6 +26,24 @@
 .categories-menu .active {
   border-bottom: 3px solid black;
   color: black;
+}
+
+/*------------------------------------    Formularios generales     --------------------------------*/
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"] {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 /*------------------------------------    Formulario de productos y categorías     --------------------------------*/
@@ -62,7 +75,7 @@
   border-radius: 4px;
 }
 
-/* Botones */
+/*------------------------------------    Botones     --------------------------------*/
 .boton-principal {
   grid-column: span 2;
   background-color: #007bff;
@@ -94,6 +107,35 @@
   background-color: #a71d2a;
 }
 
+/*------------------------------------    Lista de categorías y productos     --------------------------------*/
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+}
+
+li:hover {
+  background-color: rgb(255, 255, 255);
+}
+
+li span {
+  margin-right: 4px;
+  cursor: pointer;
+  color: #007bff;
+}
+
+li span:hover {
+  text-decoration: underline;
+}
+
 /*------------------------------------    Productos     --------------------------------*/
 .product-image {
   width: 100px;
@@ -118,7 +160,7 @@
   background-color: rgb(215, 215, 215);
 }
 
-/*------------------------------------    Lista de productos     --------------------------------*/
+/*------------------------------------    Lista de productos (cards)     --------------------------------*/
 .products-container {
   display: flex;
   flex-direction: column;
@@ -151,7 +193,7 @@
   justify-content: space-between;
 }
 
-/* Botón de agregar producto */
+/*------------------------------------    Botón de agregar producto     --------------------------------*/
 .add-button {
   display: flex;
   justify-content: center;

@@ -1,4 +1,4 @@
-/* AdminPanel.css */
+/*------------------------------------    Admin Panel (limpio)     --------------------------------*/
 * {
     margin: 0;
 }
@@ -14,13 +14,14 @@
     border-radius: 8px;
 }
 
-h1,
-h2 {
+/* Títulos */
+h1 {
     text-align: center;
     color: #656565;
     margin: 2px;
 }
 
+/* Botones generales */
 button {
     background-color: #007bff;
     color: white;
@@ -29,82 +30,14 @@ button {
     margin: 5px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 button:hover {
-    background-color: #dfeefe;
+    background-color: #0056b3;
 }
 
-/* Formulario */
-form {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="file"] {
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-}
-
-li {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px;
-    border-bottom: 1px solid #ddd;
-}
-
-li:hover {
-    background-color: rgb(255, 255, 255);
-}
-
-li span {
-    margin-right: 4px;
-    cursor: pointer;
-    color: #007bff;
-}
-
-li span:hover {
-    text-decoration: underline;
-}
-
-.product-image {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 5px;
-}
-
-.icon-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    color: #4d4d4d;
-    margin: 0 3px;
-    padding: 3px 6px;
-    border: 0.5px solid rgb(196, 196, 196);
-}
-
-.icon-btn:hover {
-    color: red;
-    background-color: rgb(215, 215, 215);
-}
-
-/*------------------------------------    Admin Header (Nuevo)    --------------------------------*/
+/*------------------------------------    Header del admin    --------------------------------*/
 .admin-header {
     display: flex;
     justify-content: space-between;
@@ -118,8 +51,6 @@ li span:hover {
 }
 
 .logout-btn {
-    width: auto;
-    height: auto;
     background-color: #dc3545;
     padding: 10px 20px;
     margin: 0;
@@ -129,7 +60,7 @@ li span:hover {
     background-color: #a71d2a;
 }
 
-/*----------Tabs de navegación (Actualizados) ---------*/
+/*------------------------------------    Tabs de navegación    --------------------------------*/
 .admin-tabs {
     display: flex;
     justify-content: center;
@@ -139,11 +70,11 @@ li span:hover {
 
 .admin-tabs button {
     padding: 10px 20px;
-    border: none;
     background-color: #e8e8e8;
     color: #656565;
-    cursor: pointer;
+    border: none;
     border-radius: 5px;
+    cursor: pointer;
     transition: all 0.3s;
     font-weight: 500;
 }
@@ -159,70 +90,9 @@ li span:hover {
 }
 
 .admin-tabs button.active:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; 
 }
 
 .admin-content {
     margin-top: 20px;
 }
-
-/*------------------------------------    Formulario categorias     --------------------------------*/
-.formulario-inputs {
-    display: flex;
-    width: 100%;
-}
-
-.formulario {
-    padding: 10px;
-}
-
-.formulario h2 {
-    font-size: 1.5rem;
-    font-weight: bold;
-    margin-bottom: 16px;
-}
-
-.formulario-contenedor {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    width: 100%;
-}
-
-.input {
-    border: 1px solid #ccc;
-    padding: 8px;
-    border-radius: 4px;
-}
-
-.boton-principal {
-    grid-column: span 2;
-    background-color: #007bff;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    width: 210px;
-    margin: auto;
-}
-
-.boton-principal:hover {
-    background-color: #0056b3;
-}
-
-.boton-cancelar {
-    width: 210px;
-    margin: auto;
-    background-color: #dc3545;
-    color: white;
-    padding: 10px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.boton-cancelar:hover {
-    background-color: #a71d2a;
-}
-
