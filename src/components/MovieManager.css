@@ -73,6 +73,20 @@ form input[type="file"] {
     cursor: pointer;
 }
 
+/* Contenedor de botones */
+.form-buttons {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+/* Cuando hay un solo botón, centrarlo */
+.form-buttons.single-button {
+    justify-content: center;
+}
+
 form button {
     padding: 12px 18px;
     border: none;
@@ -83,6 +97,7 @@ form button {
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.25s ease;
+    min-width: 160px;
 }
 
 form button:hover {
@@ -97,7 +112,6 @@ form button[type="button"] {
 form button[type="button"]:hover {
     background-color: #c53030;
 }
-
 /* Lista de películas */
 .movie-list {
     list-style: none;
