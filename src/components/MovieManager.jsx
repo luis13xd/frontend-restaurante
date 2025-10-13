@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import "./MovieManager.css";
 
 function MovieManager() {
   const [movies, setMovies] = useState([]);
@@ -278,24 +279,34 @@ function MovieManager() {
           </button>
         )}
       </form>
-
+      <br />
       <h3>Películas Agregadas</h3>
-      <ul>
+      <ul className="movie-list">
         {movies.map((movie) => (
-          <li key={movie._id}>
-            {movie.image && (
-              <img src={movie.image} alt={movie.name} width="100" />
-            )}
-            <h4>{movie.name}</h4>
-            <p>{movie.genre}</p>
-            <p>{movie.description}</p>
-            <p>{new Date(movie.dateTime).toLocaleString()}</p>
-            <button className="icon-btn" onClick={() => handleEditMovie(movie)}>
-              <FaEdit size={15} />
-            </button>
-            <button className="icon-btn" onClick={() => deleteMovie(movie._id)}>
-              <FaTrash size={15} />
-            </button>
+          <li key={movie._id} className="movie-card">
+            {movie.image && <img src={movie.image} alt={movie.name} />}
+            <div className="movie-infor">
+              <h4>{movie.name}</h4>
+              <p>{movie.genre}</p>
+              <p>{movie.description}</p>
+              <span className="movie-date">
+                {new Date(movie.dateTime).toLocaleString()}
+              </span>
+            </div>
+            <div className="movie-actions">
+              <button
+                className="icon-btn"
+                onClick={() => handleEditMovie(movie)}
+              >
+                <FaEdit size={15} />
+              </button>
+              <button
+                className="icon-btn delete"
+                onClick={() => deleteMovie(movie._id)}
+              >
+                <FaTrash size={15} />
+              </button>
+            </div>
           </li>
         ))}
       </ul>

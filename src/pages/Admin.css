@@ -5,7 +5,7 @@
 
 /* Contenedor principal */
 .admin-panel {
-    max-width: 900px;
+    max-width: 700px;
     margin: auto;
     padding: 70px 20px;
     font-family: Arial, sans-serif;
@@ -32,7 +32,7 @@ button {
 }
 
 button:hover {
-    background-color: #0060c7;
+    background-color: #dfeefe;
 }
 
 /* Formulario */
@@ -53,7 +53,6 @@ input[type="file"] {
     border-radius: 5px;
 }
 
-/* Lista de categorías y productos */
 ul {
     list-style: none;
     padding: 0;
@@ -82,7 +81,6 @@ li span:hover {
     text-decoration: underline;
 }
 
-/* Imagen del producto */
 .product-image {
     width: 100px;
     height: 100px;
@@ -106,7 +104,7 @@ li span:hover {
     background-color: rgb(215, 215, 215);
 }
 
-/*------------------------------------    Admin menu     --------------------------------*/
+/*------------------------------------    Admin menu     --------------------------------*/
 .admin-menu {
     display: flex;
     justify-content: space-between;
@@ -123,40 +121,40 @@ li span:hover {
     background-color: #a71d2a;
 }
 
-/*----------refacto---------*/
+/*----------refacto (Tabs de navegación) ---------*/
 .admin-tabs {
-  display: flex;
-  gap: 10px;
-  margin: 20px 0;
+    display: flex;
+    gap: 10px;
+    margin: 20px 0;
 }
 
 .admin-tabs button {
-  padding: 10px 20px;
-  border: none;
-  background-color: #c7c7c7;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s;
+    padding: 10px 20px;
+    border: none;
+    background-color: #c7c7c7;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
 }
 
 .admin-tabs button.active {
-  background-color: #007bff;
-  color: white;
+    background-color: #007bff;
+    color: white;
 }
 
 .admin-tabs button:hover {
-  background-color: #b4b4b4;
+    background-color: #b4b4b4;
 }
 
 .admin-tabs button.active:hover {
-  background-color: #0056b3;
+    background-color: #0056b3;
 }
 
 .admin-content {
-  margin-top: 20px;
+    margin-top: 20px;
 }
 
-/*------------------------------------    Formulario categorias     --------------------------------*/
+/*------------------------------------    Formulario categorias     --------------------------------*/
 .formulario-inputs {
     display: flex;
     width: 100%;
@@ -216,7 +214,7 @@ li span:hover {
     background-color: #a71d2a;
 }
 
-/*------------------------------------    Login     --------------------------------*/
+/*------------------------------------    Login     --------------------------------*/
 .login-container {
     display: flex;
     justify-content: center;

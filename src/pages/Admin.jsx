@@ -20,8 +20,13 @@ function AdminPanel() {
 
   return (
     <div className="admin-panel">
+      <h1>Administrador</h1>
+
+      <button className="logout-btn" onClick={handleLogout}>
+        Salir
+      </button>
+
       <div className="admin-menu">
-        <h1>Administrador</h1>
         <div className="admin-tabs">
           <button
             className={activeTab === "menu" ? "active" : ""}
@@ -36,9 +41,6 @@ function AdminPanel() {
             Gestión de Cartelera
           </button>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>
-          Salir
-        </button>
       </div>
 
       <div className="admin-content">
