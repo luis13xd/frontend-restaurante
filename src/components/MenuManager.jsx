@@ -436,7 +436,6 @@ function MenuManager() {
                   className="product-image"
                   src={product.image}
                   alt={product.name}
-                  style={{ width: "100px", height: "100px" }}
                 />
 
                 <h3>{product.name}</h3>

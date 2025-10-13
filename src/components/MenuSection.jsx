@@ -72,7 +72,7 @@ function MenuSection() {
       <br />
       <br />
 
-      <h2>Carta Infusión</h2>
+      <h1>Carta Infusión</h1>
 
       {/* Menú de categorías */}
       <div className="categories-menu">
