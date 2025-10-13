@@ -1,5 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import "./MenuManager.css";
+
 
 function MenuManager() {
   const productFormRef = useRef(null);
