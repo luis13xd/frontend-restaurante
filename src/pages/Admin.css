@@ -104,26 +104,35 @@ li span:hover {
     background-color: rgb(215, 215, 215);
 }
 
-/*------------------------------------    Admin menu     --------------------------------*/
-.admin-menu {
+/*------------------------------------    Admin Header (Nuevo)    --------------------------------*/
+.admin-header {
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.admin-header h1 {
+    margin: 0;
+    text-align: left;
 }
 
 .logout-btn {
-    width: 70px;
-    height: 35px;
+    width: auto;
+    height: auto;
     background-color: #dc3545;
-    padding: 5px;
+    padding: 10px 20px;
+    margin: 0;
 }
 
 .logout-btn:hover {
     background-color: #a71d2a;
 }
 
-/*----------refacto (Tabs de navegación) ---------*/
+/*----------Tabs de navegación (Actualizados) ---------*/
 .admin-tabs {
     display: flex;
+    justify-content: center;
     gap: 10px;
     margin: 20px 0;
 }
@@ -131,19 +140,22 @@ li span:hover {
 .admin-tabs button {
     padding: 10px 20px;
     border: none;
-    background-color: #c7c7c7;
+    background-color: #e8e8e8;
+    color: #656565;
     cursor: pointer;
     border-radius: 5px;
-    transition: background-color 0.3s;
+    transition: all 0.3s;
+    font-weight: 500;
 }
 
 .admin-tabs button.active {
     background-color: #007bff;
     color: white;
+    box-shadow: 0 2px 5px rgba(0, 123, 255, 0.3);
 }
 
-.admin-tabs button:hover {
-    background-color: #b4b4b4;
+.admin-tabs button:hover:not(.active) {
+    background-color: #d0d0d0;
 }
 
 .admin-tabs button.active:hover {
@@ -154,7 +166,7 @@ li span:hover {
     margin-top: 20px;
 }
 
-/*------------------------------------    Formulario categorias     --------------------------------*/
+/*------------------------------------    Formulario categorias     --------------------------------*/
 .formulario-inputs {
     display: flex;
     width: 100%;
@@ -214,7 +226,7 @@ li span:hover {
     background-color: #a71d2a;
 }
 
-/*------------------------------------    Login     --------------------------------*/
+/*------------------------------------    Login     --------------------------------*/
 .login-container {
     display: flex;
     justify-content: center;
