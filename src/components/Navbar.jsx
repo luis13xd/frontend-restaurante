@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { FaShoppingCart } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
@@ -10,6 +10,7 @@ function Navbar() {
   const { cart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [active, setActive] = useState("inicio");
+  const location = useLocation(); // 👈 Hook de React
 
   useEffect(() => {
     const sections = document.querySelectorAll("section, div[id]");
@@ -22,7 +23,7 @@ function Navbar() {
           }
         });
       },
-      { threshold: 0.5 } 
+      { threshold: 0.5 }
     );
 
     sections.forEach((section) => observer.observe(section));
@@ -31,6 +32,14 @@ function Navbar() {
       sections.forEach((section) => observer.unobserve(section));
     };
   }, []);
+
+  if (
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname.startsWith("/admin")
+  ) {
+    return null;
+  }
 
   const handleClick = (sectionId, sectionName) => {
     const section = document.getElementById(sectionId);
@@ -84,14 +93,6 @@ function Navbar() {
         {cart.length > 0 && <span className="cart-count">{cart.length}</span>}
       </div>
 
-      {/* <div className="auth-links">
-        <Link to="/login">
-          <FaSignInAlt />
-        </Link>
-        <Link to="/register">
-          <FaUserPlus />
-        </Link>
-      </div> */}
       {isCartOpen && <CartModal onClose={() => setIsCartOpen(false)} />}
     </nav>
   );
