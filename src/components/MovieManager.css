@@ -141,7 +141,7 @@ form button[type="button"]:hover {
 }
 
 .movie-card img {
-    width: 90px;
+    width: 130px;
     height: 90px;
     object-fit: cover;
     border-radius: 10px;
