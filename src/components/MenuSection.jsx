@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { FaPlus, FaMinus } from "react-icons/fa";
 import { useCart } from "../context/CartContext";
+import "./MenuSection.css"
 
 function MenuSection() {
   const { cart, addToCart, removeFromCart } = useCart();
@@ -168,7 +169,7 @@ function MenuSection() {
             );
           })
         ) : (
-          <p>No hay productos disponibles en esta categoría.</p>
+          <p style={{margin:'auto'}}> No hay productos disponibles en esta categoría.</p>
         )}
       </div>
       <br />
