@@ -1,215 +1,604 @@
-/*------------------------------------    Categorías del menú     --------------------------------*/
-.categories-menu {
-  display: flex;
-  gap: 10px;
-  overflow-x: auto;
-  padding: 5px 10px;
-  white-space: nowrap;
-  margin: 10px auto;
-  justify-content: center;
-  flex-wrap: wrap;
+/* ====================================
+   Variables CSS
+==================================== */
+:root {
+  --primary-color: #3b82f6;
+  --primary-hover: #2563eb;
+  --danger-color: #ef4444;
+  --danger-hover: #dc2626;
+  --success-color: #10b981;
+  --success-hover: #059669;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.categories-menu ul {
-  display: flex;
+/* ====================================
+   Reset y estilos base
+==================================== */
+* {
+  box-sizing: border-box;
 }
 
-.categories-menu button {
-  padding: 6px 12px;
-  background-color: transparent;
-  cursor: pointer;
-  color: grey;
-  font-weight: bold;
-  border-radius: 0%;
-}
-
-.categories-menu .active {
-  border-bottom: 3px solid black;
-  color: black;
-}
-
-/*------------------------------------    Formularios generales     --------------------------------*/
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-input[type="text"],
-input[type="number"],
-input[type="file"] {
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-/*------------------------------------    Formulario de productos y categorías     --------------------------------*/
-.formulario {
-  padding: 10px;
-}
-
-.formulario h2 {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.formulario-inputs {
-  display: flex;
-  width: 100%;
-}
-
-.formulario-contenedor {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  width: 100%;
-}
-
-.input {
-  border: 1px solid #ccc;
-  padding: 8px;
-  border-radius: 4px;
-}
-
-/*------------------------------------    Botones     --------------------------------*/
-.boton-principal {
-  grid-column: span 2;
-  background-color: #007bff;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  width: 210px;
-  margin: auto;
-}
-
-.boton-principal:hover {
-  background-color: #9cc8f7;
-}
-
-.boton-cancelar {
-  width: 210px;
-  margin: auto;
-  background-color: #dc3545;
-  color: white;
-  padding: 10px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-.boton-cancelar:hover {
-  background-color: #a71d2a;
-}
-
-/*------------------------------------    Lista de categorías y productos     --------------------------------*/
 ul {
   list-style: none;
   padding: 0;
   margin: 0;
 }
 
-li {
+/* ====================================
+   Container principal
+==================================== */
+.menu-manager-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* ====================================
+   Sección de Categorías
+==================================== */
+.categories-section {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-md);
+}
+
+.categories-section h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 8px;
-  border-bottom: 1px solid #ddd;
+  gap: 10px;
 }
 
-li:hover {
-  background-color: rgb(255, 255, 255);
+.categories-section h2::before {
+  content: "📁";
+  font-size: 1.5rem;
 }
 
-li span {
-  margin-right: 4px;
-  cursor: pointer;
-  color: #007bff;
-}
-
-li span:hover {
-  text-decoration: underline;
-}
-
-/*------------------------------------    Productos     --------------------------------*/
-.product-image {
-  width: 80px;
-  height: 100px;
-  object-fit: cover;
-  border-radius: 5px;
-}
-
-.icon-btn {
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.2rem;
-  color: #4d4d4d;
-  margin: 0 3px;
-  padding: 3px 6px;
-  border: 0.5px solid rgb(196, 196, 196);
-}
-
-.icon-btn:hover {
-  color: red;
-  background-color: rgb(215, 215, 215);
-}
-
-/*------------------------------------    Lista de productos (cards)     --------------------------------*/
-.products-container {
+.category-input-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.product-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 98%;
-  max-width: 600px;
-  background-color: #fff;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-  margin: auto;
+  gap: 12px;
+  margin-bottom: 24px;
   flex-wrap: wrap;
 }
 
-.product-card:hover {
-  background-color: #ececec;
+.category-input-wrapper input[type="text"] {
+  flex: 1;
+  min-width: 250px;
+  padding: 12px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: var(--transition);
 }
 
-.product-info {
-  flex-grow: 1;
-  display: flex;
-  gap: 2px;
-  align-items: center;
-  justify-content: space-between;
+.category-input-wrapper input[type="text"]:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/*------------------------------------    Botón de agregar producto     --------------------------------*/
-.add-button {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 24px;
-  height: 24px;
-  background-color: green;
+.category-input-wrapper button {
+  padding: 12px 24px;
+  background: var(--primary-color);
   color: white;
-  border-radius: 50%;
-  cursor: pointer;
-  font-size: 14px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
   border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
 }
 
-.add-button:hover {
-  background-color: darkgreen;
+.category-input-wrapper button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ====================================
+   Lista de Categorías
+==================================== */
+.categories-menu {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 0;
+}
+
+.categories-menu ul {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.categories-menu li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 16px;
+  background: var(--gray-100);
+  border-radius: var(--radius-md);
+  border: 2px solid transparent;
+  transition: var(--transition);
+}
+
+.categories-menu li:hover {
+  background: var(--gray-200);
+  border-color: var(--gray-300);
+}
+
+.categories-menu li span {
+  font-weight: 500;
+  color: var(--gray-700);
+  cursor: pointer;
+  user-select: none;
+  transition: var(--transition);
+}
+
+.categories-menu li span:hover {
+  color: var(--primary-color);
+}
+
+.categories-menu li.active {
+  background: var(--primary-color);
+  border-color: var(--primary-hover);
+}
+
+.categories-menu li.active span {
+  color: white;
+}
+
+/* Modo edición de categoría */
+.categories-menu li input[type="text"] {
+  padding: 6px 12px;
+  border: 2px solid var(--primary-color);
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  min-width: 150px;
+}
+
+.categories-menu li button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.categories-menu li button:first-of-type {
+  background: var(--success-color);
+  color: white;
+}
+
+.categories-menu li button:first-of-type:hover {
+  background: var(--success-hover);
+}
+
+.categories-menu li button:last-of-type {
+  background: var(--gray-400);
+  color: white;
+}
+
+.categories-menu li button:last-of-type:hover {
+  background: var(--gray-500);
+}
+
+/* ====================================
+   Botones de iconos
+==================================== */
+.icon-btn {
+  background: white;
+  border: 1px solid var(--gray-300);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--gray-600);
+  padding: 6px 10px;
+  transition: var(--transition);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background: var(--gray-100);
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  transform: scale(1.05);
+}
+
+.icon-btn:active {
+  transform: scale(0.95);
+}
+
+.icon-btn.delete:hover {
+  background: var(--danger-color);
+  color: white;
+  border-color: var(--danger-color);
+}
+
+/* ====================================
+   Sección de Productos
+==================================== */
+.formulario {
+  background: white;
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-md);
+}
+
+.formulario h2 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-bottom: 24px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.formulario h2::before {
+  content: "🛍️";
+  font-size: 1.5rem;
+}
+
+/* ====================================
+   Formulario de Productos
+==================================== */
+.formulario-inputs {
+  margin-bottom: 32px;
+}
+
+.formulario-contenedor {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  padding: 20px;
+  background: var(--gray-50);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--gray-200);
+}
+
+.input {
+  padding: 12px 16px;
+  border: 2px solid var(--gray-200);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  transition: var(--transition);
+  background: white;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.input[type="file"] {
+  padding: 10px;
+  cursor: pointer;
+}
+
+.input[type="file"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ====================================
+   Botones de formulario
+==================================== */
+.boton-principal {
+  grid-column: span 2;
+  background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition);
+  box-shadow: var(--shadow-md);
+}
+
+.boton-principal:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+}
+
+.boton-principal:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.boton-principal:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.boton-cancelar {
+  grid-column: span 2;
+  background: var(--danger-color);
+  color: white;
+  padding: 14px 24px;
+  border: none;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: var(--transition);
+}
+
+.boton-cancelar:hover {
+  background: var(--danger-hover);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+/* ====================================
+   Lista de Productos
+==================================== */
+/* ====================================
+   Lista de Productos
+==================================== */
+.products-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 24px;
+}
+
+/* ... mantén el resto de .products-list li ... */
+
+.products-list li {
+  background: white;
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  transition: var(--transition);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: var(--shadow-sm);
+}
+
+.products-list li:hover {
+  border-color: var(--primary-color);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}
+
+.product-image {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: var(--radius-md);
+  background: var(--gray-100);
+}
+
+.products-list h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--gray-800);
+  margin: 0;
+}
+
+.products-list p {
+  font-size: 0.95rem;
+  color: var(--gray-600);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.products-list p strong {
+  color: var(--gray-800);
+  font-size: 1.1rem;
+}
+
+.product-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
+.product-actions button {
+  flex: 1;
+  min-width: 80px;
+}
+
+/* ====================================
+   Botón de estado (Activo/Inactivo)
+==================================== */
+.toggle-active-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.toggle-active-btn.active {
+  background: var(--success-color);
+  color: white;
+}
+
+.toggle-active-btn.active:hover {
+  background: var(--success-hover);
+  box-shadow: var(--shadow-md);
+}
+
+.toggle-active-btn.inactive {
+  background: var(--danger-color);
+  color: white;
+}
+
+.toggle-active-btn.inactive:hover {
+  background: var(--danger-hover);
+  box-shadow: var(--shadow-md);
+}
+
+/* ====================================
+   Responsive Design
+==================================== */
+@media (max-width: 768px) {
+  .menu-manager-container {
+    padding: 12px;
+  }
+
+  .categories-section,
+  .formulario {
+    padding: 16px;
+  }
+
+  .categories-section h2,
+  .formulario h2 {
+    font-size: 1.5rem;
+  }
+
+  .formulario-contenedor {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 16px;
+  }
+
+  .boton-principal,
+  .boton-cancelar {
+    grid-column: span 1;
+    padding: 12px 20px;
+  }
+
+  .products-list {
+    grid-template-columns: 1fr;
+  }
+
+  .category-input-wrapper {
+    flex-direction: column;
+  }
+
+  .category-input-wrapper input[type="text"] {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .category-input-wrapper button {
+    width: 100%;
+  }
+
+  .product-actions {
+    flex-direction: column;
+  }
+
+  .product-actions button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .categories-menu li {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .icon-btn {
+    padding: 8px 12px;
+  }
+
+  .product-image {
+    height: 160px;
+  }
+}
+
+/* ====================================
+   Animaciones
+==================================== */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.formulario,
+.categories-section {
+  animation: fadeIn 0.4s ease-out;
+}
+
+.products-list li {
+  animation: fadeIn 0.3s ease-out;
+  animation-fill-mode: both;
+}
+
+.products-list li:nth-child(1) {
+  animation-delay: 0.05s;
+}
+
+.products-list li:nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.products-list li:nth-child(3) {
+  animation-delay: 0.15s;
+}
+
+.products-list li:nth-child(4) {
+  animation-delay: 0.2s;
+}
+
+.products-list li:nth-child(5) {
+  animation-delay: 0.25s;
+}
+
+.products-list li:nth-child(6) {
+  animation-delay: 0.3s;
+}
+
+/* ====================================
+   Estados vacíos
+==================================== */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--gray-500);
+}
+
+.empty-state-icon {
+  font-size: 4rem;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: 1.125rem;
+  font-weight: 500;
 }

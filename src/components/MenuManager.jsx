@@ -1,6 +1,6 @@
 import { useRef } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import { useCategories,  } from "../hooks/useCategories";
+import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
 import { useImageUpload } from "../hooks/useImageUpload";
 import "./MenuManager.css";
@@ -9,7 +9,6 @@ function MenuManager() {
   const productFormRef = useRef(null);
   const imageInputRef = useRef(null);
 
-  // Custom hooks
   const {
     categories,
     newCategory,
@@ -41,7 +40,6 @@ function MenuManager() {
 
   const { uploadImage, isUploading } = useImageUpload();
 
-  // Handlers
   const handleInputChange = (e, setter) => setter(e.target.value);
 
   const handleImageChange = async (e) => {
@@ -107,63 +105,80 @@ function MenuManager() {
     newProduct.description ||
     newProduct.price ||
     newProduct.image;
+    
 
   return (
-    <div>
-      <h2>Categorías</h2>
-      <input
-        type="text"
-        placeholder="Nueva categoría"
-        value={newCategory}
-        onChange={(e) => handleInputChange(e, setNewCategory)}
-      />
-      <button onClick={addCategory}>Agregar</button>
-      
-      <div className="categories-menu">
-        <ul>
-          {categories.map((category) => (
-            <li key={category._id}>
-              {editingCategory === category._id ? (
-                <>
-                  <input
-                    type="text"
-                    value={editedCategoryName}
-                    onChange={(e) => setEditedCategoryName(e.target.value)}
-                  />
-                  <button onClick={() => updateCategory(category._id)}>
-                    Guardar
-                  </button>
-                  <button onClick={() => setEditingCategory(null)}>
-                    Cancelar
-                  </button>
-                </>
-              ) : (
-                <>
-                  <span onClick={() => fetchProducts(category._id)}>
-                    {category.name}
-                  </span>
-                  <button
-                    className="icon-btn"
-                    onClick={() => {
-                      setEditingCategory(category._id);
-                      setEditedCategoryName(category.name);
-                    }}
-                  >
-                    <FaEdit size={15} />
-                  </button>
-                  <button
-                    className="icon-btn"
-                    onClick={() => handleDeleteCategory(category._id)}
-                  >
-                    <FaTrash size={15} />
-                  </button>
-                </>
-              )}
-            </li>
-          ))}
-        </ul>
+    <div className="menu-manager-container">
+      {/* Sección de Categorías */}
+      <div className="categories-section">
+        <h2>Categorías</h2>
+        <div className="category-input-wrapper">
+          <input
+            type="text"
+            placeholder="Nueva categoría"
+            value={newCategory}
+            onChange={(e) => handleInputChange(e, setNewCategory)}
+          />
+          <button onClick={addCategory}>Agregar Categoría</button>
+        </div>
+        
+        <div className="categories-menu">
+          <ul>
+            {categories.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-state-icon">📂</div>
+                <p className="empty-state-text">No hay categorías creadas aún</p>
+              </div>
+            ) : (
+              categories.map((category) => (
+                <li 
+                  key={category._id}
+                  className={selectedCategory === category._id ? "active" : ""}
+                >
+                  {editingCategory === category._id ? (
+                    <>
+                      <input
+                        type="text"
+                        value={editedCategoryName}
+                        onChange={(e) => setEditedCategoryName(e.target.value)}
+                      />
+                      <button onClick={() => updateCategory(category._id)}>
+                        Guardar
+                      </button>
+                      <button onClick={() => setEditingCategory(null)}>
+                        Cancelar
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <span onClick={() => fetchProducts(category._id)}>
+                        {category.name}
+                      </span>
+                      <button
+                        className="icon-btn"
+                        onClick={() => {
+                          setEditingCategory(category._id);
+                          setEditedCategoryName(category.name);
+                        }}
+                      >
+                        <FaEdit size={15} />
+                      </button>
+                      <button
+                        className="icon-btn delete"
+                        onClick={() => handleDeleteCategory(category._id)}
+                      >
+                        <FaTrash size={15} />
+                      </button>
+                    </>
+                  )}
+                </li>
+              ))
+            )}
+          </ul>
+        </div>
       </div>
 
+      {/* Sección de Productos */}
       {selectedCategory && (
         <div className="formulario">
           <h2>Productos</h2>
@@ -175,7 +190,7 @@ function MenuManager() {
             >
               <input
                 type="text"
-                placeholder="Nombre"
+                placeholder="Nombre del producto"
                 className="input"
                 value={newProduct.name}
                 onChange={(e) =>
@@ -213,10 +228,10 @@ function MenuManager() {
                 disabled={isUploading}
               >
                 {isUploading 
-                  ? "Subiendo imagen..." 
+                  ? "⏳ Subiendo imagen..." 
                   : editingProduct 
-                    ? "Actualizar Producto" 
-                    : "Agregar Producto"}
+                    ? "✓ Actualizar Producto" 
+                    : "+ Agregar Producto"}
               </button>
               {hasData && (
                 <button
@@ -224,58 +239,61 @@ function MenuManager() {
                   className="boton-cancelar"
                   onClick={handleCancelForm}
                 >
-                  Cancelar
+                  ✕ Cancelar
                 </button>
               )}
             </form>
           </div>
 
-          <ul>
-            {products.map((product) => (
-              <li key={product._id}>
-                <img
-                  className="product-image"
-                  src={product.image}
-                  alt={product.name}
-                />
-                <h3>{product.name}</h3>
-                <p>{product.description}</p>
-                <p>
-                  <strong>Precio:</strong>{" "}
-                  {product.price.toLocaleString("es-CO", {
-                    style: "currency",
-                    currency: "COP",
-                    minimumFractionDigits: 0,
-                  })}
+          <ul className="products-list">
+            {products.length === 0 ? (
+              <div className="empty-state">
+                <div className="empty-state-icon">🛍️</div>
+                <p className="empty-state-text">
+                  No hay productos en esta categoría
                 </p>
-                <div>
-                  <button
-                    onClick={() => toggleProductActive(product._id)}
-                    style={{
-                      backgroundColor: product.activo ? "green" : "red",
-                      color: "white",
-                      border: "none",
-                      padding: "5px 10px",
-                      cursor: "pointer",
-                    }}
-                  >
-                    {product.activo ? "Activo" : "Inactivo"}
-                  </button>
-                  <button
-                    className="icon-btn"
-                    onClick={() => handleEditProduct(product)}
-                  >
-                    <FaEdit size={15} />
-                  </button>
-                  <button
-                    className="icon-btn"
-                    onClick={() => deleteProduct(product._id)}
-                  >
-                    <FaTrash size={15} />
-                  </button>
-                </div>
-              </li>
-            ))}
+              </div>
+            ) : (
+              products.map((product) => (
+                <li key={product._id}>
+                  <img
+                    className="product-image"
+                    src={product.image}
+                    alt={product.name}
+                  />
+                  <h3>{product.name}</h3>
+                  <p>{product.description}</p>
+                  <p>
+                    <strong>Precio:</strong>{" "}
+                    {product.price.toLocaleString("es-CO", {
+                      style: "currency",
+                      currency: "COP",
+                      minimumFractionDigits: 0,
+                    })}
+                  </p>
+                  <div className="product-actions">
+                    <button
+                      onClick={() => toggleProductActive(product._id)}
+                      className={`toggle-active-btn ${product.activo ? 'active' : 'inactive'}`}
+                    >
+                      {product.activo ? "✓ Activo" : "✕ Inactivo"}
+                    </button>
+                    <button
+                      className="icon-btn"
+                      onClick={() => handleEditProduct(product)}
+                    >
+                      <FaEdit size={15} />
+                    </button>
+                    <button
+                      className="icon-btn delete"
+                      onClick={() => deleteProduct(product._id)}
+                    >
+                      <FaTrash size={15} />
+                    </button>
+                  </div>
+                </li>
+              ))
+            )}
           </ul>
         </div>
       )}
