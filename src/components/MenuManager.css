@@ -269,7 +269,8 @@
 }
 
 .mm-input {
-  padding: 12px 16px;
+  width: 90%;
+  padding: 10px 12px;
   border: 2px solid var(--gray-200);
   border-radius: var(--radius-md);
   font-size: 1rem;
