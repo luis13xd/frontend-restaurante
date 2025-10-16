@@ -45,7 +45,6 @@ function MenuManager() {
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
     const result = await uploadImage(file, !!editingProduct);
-    
     if (result) {
       if (editingProduct) {
         setNewProduct((prev) => ({ ...prev, image: file, imageFile: file }));
@@ -58,21 +57,15 @@ function MenuManager() {
   const handleAddProduct = async (e) => {
     e.preventDefault();
     const success = await addProduct();
-    if (success && imageInputRef.current) {
-      imageInputRef.current.value = "";
-    }
+    if (success && imageInputRef.current) imageInputRef.current.value = "";
   };
 
   const handleUpdateProduct = async (e) => {
     e.preventDefault();
     const success = await updateProduct();
     if (success) {
-      if (productFormRef.current) {
-        productFormRef.current.reset();
-      }
-      if (imageInputRef.current) {
-        imageInputRef.current.value = "";
-      }
+      if (productFormRef.current) productFormRef.current.reset();
+      if (imageInputRef.current) imageInputRef.current.value = "";
     }
   };
 
@@ -87,12 +80,8 @@ function MenuManager() {
 
   const handleCancelForm = () => {
     cancelEditing();
-    if (productFormRef.current) {
-      productFormRef.current.reset();
-    }
-    if (imageInputRef.current) {
-      imageInputRef.current.value = "";
-    }
+    if (productFormRef.current) productFormRef.current.reset();
+    if (imageInputRef.current) imageInputRef.current.value = "";
   };
 
   const handleDeleteCategory = async (categoryId) => {
@@ -105,14 +94,13 @@ function MenuManager() {
     newProduct.description ||
     newProduct.price ||
     newProduct.image;
-    
 
   return (
-    <div className="menu-manager-container">
-      {/* Sección de Categorías */}
-      <div className="categories-section">
+    <div className="mm-container">
+      {/* Categorías */}
+      <div className="mm-categories">
         <h2>Categorías</h2>
-        <div className="category-input-wrapper">
+        <div className="mm-category-input">
           <input
             type="text"
             placeholder="Nueva categoría"
@@ -121,19 +109,19 @@ function MenuManager() {
           />
           <button onClick={addCategory}>Agregar Categoría</button>
         </div>
-        
-        <div className="categories-menu">
+
+        <div className="mm-category-menu">
           <ul>
             {categories.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-state-icon">📂</div>
-                <p className="empty-state-text">No hay categorías creadas aún</p>
+              <div className="mm-empty">
+                <div className="mm-empty-icon">📂</div>
+                <p className="mm-empty-text">No hay categorías creadas aún</p>
               </div>
             ) : (
               categories.map((category) => (
-                <li 
+                <li
                   key={category._id}
-                  className={selectedCategory === category._id ? "active" : ""}
+                  className={selectedCategory === category._id ? "mm-active" : ""}
                 >
                   {editingCategory === category._id ? (
                     <>
@@ -155,7 +143,7 @@ function MenuManager() {
                         {category.name}
                       </span>
                       <button
-                        className="icon-btn"
+                        className="mm-icon-btn"
                         onClick={() => {
                           setEditingCategory(category._id);
                           setEditedCategoryName(category.name);
@@ -164,7 +152,7 @@ function MenuManager() {
                         <FaEdit size={15} />
                       </button>
                       <button
-                        className="icon-btn delete"
+                        className="mm-icon-btn mm-delete"
                         onClick={() => handleDeleteCategory(category._id)}
                       >
                         <FaTrash size={15} />
@@ -178,20 +166,20 @@ function MenuManager() {
         </div>
       </div>
 
-      {/* Sección de Productos */}
+      {/* Productos */}
       {selectedCategory && (
-        <div className="formulario">
+        <div className="mm-form">
           <h2>Productos</h2>
-          <div className="formulario-inputs">
+          <div className="mm-form-inputs">
             <form
               ref={productFormRef}
               onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct}
-              className="formulario-contenedor"
+              className="mm-form-content"
             >
               <input
                 type="text"
                 placeholder="Nombre del producto"
-                className="input"
+                className="mm-input"
                 value={newProduct.name}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, name: e.target.value })
@@ -200,7 +188,7 @@ function MenuManager() {
               <input
                 type="text"
                 placeholder="Descripción"
-                className="input"
+                className="mm-input"
                 value={newProduct.description}
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, description: e.target.value })
@@ -210,7 +198,7 @@ function MenuManager() {
                 type="number"
                 placeholder="Precio"
                 value={newProduct.price}
-                className="input"
+                className="mm-input"
                 onChange={(e) =>
                   setNewProduct({ ...newProduct, price: e.target.value })
                 }
@@ -218,25 +206,25 @@ function MenuManager() {
               <input
                 type="file"
                 onChange={handleImageChange}
-                className="input"
+                className="mm-input"
                 ref={imageInputRef}
                 disabled={isUploading}
               />
-              <button 
-                type="submit" 
-                className="boton-principal"
+              <button
+                type="submit"
+                className="mm-btn-primary"
                 disabled={isUploading}
               >
-                {isUploading 
-                  ? "⏳ Subiendo imagen..." 
-                  : editingProduct 
-                    ? "✓ Actualizar Producto" 
-                    : "+ Agregar Producto"}
+                {isUploading
+                  ? "⏳ Subiendo imagen..."
+                  : editingProduct
+                  ? "✓ Actualizar Producto"
+                  : "+ Agregar Producto"}
               </button>
               {hasData && (
                 <button
                   type="button"
-                  className="boton-cancelar"
+                  className="mm-btn-cancel"
                   onClick={handleCancelForm}
                 >
                   ✕ Cancelar
@@ -245,11 +233,11 @@ function MenuManager() {
             </form>
           </div>
 
-          <ul className="products-list">
+          <ul className="mm-products">
             {products.length === 0 ? (
-              <div className="empty-state">
-                <div className="empty-state-icon">🛍️</div>
-                <p className="empty-state-text">
+              <div className="mm-empty">
+                <div className="mm-empty-icon">🛍️</div>
+                <p className="mm-empty-text">
                   No hay productos en esta categoría
                 </p>
               </div>
@@ -257,7 +245,7 @@ function MenuManager() {
               products.map((product) => (
                 <li key={product._id}>
                   <img
-                    className="product-image"
+                    className="mm-product-img"
                     src={product.image}
                     alt={product.name}
                   />
@@ -271,21 +259,23 @@ function MenuManager() {
                       minimumFractionDigits: 0,
                     })}
                   </p>
-                  <div className="product-actions">
+                  <div className="mm-product-actions">
                     <button
                       onClick={() => toggleProductActive(product._id)}
-                      className={`toggle-active-btn ${product.activo ? 'active' : 'inactive'}`}
+                      className={`mm-toggle-btn ${
+                        product.activo ? "mm-active" : "mm-inactive"
+                      }`}
                     >
                       {product.activo ? "✓ Activo" : "✕ Inactivo"}
                     </button>
                     <button
-                      className="icon-btn"
+                      className="mm-icon-btn"
                       onClick={() => handleEditProduct(product)}
                     >
                       <FaEdit size={15} />
                     </button>
                     <button
-                      className="icon-btn delete"
+                      className="mm-icon-btn mm-delete"
                       onClick={() => deleteProduct(product._id)}
                     >
                       <FaTrash size={15} />
