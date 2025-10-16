@@ -1,201 +1,85 @@
-import { useState, useRef, useEffect } from "react";
+import { useRef } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
+import { useCategories,  } from "../hooks/useCategories";
+import { useProducts } from "../hooks/useProducts";
+import { useImageUpload } from "../hooks/useImageUpload";
 import "./MenuManager.css";
-
 
 function MenuManager() {
   const productFormRef = useRef(null);
-  const selectedCategoryRef = useRef(null);
-  const [categories, setCategories] = useState([]);
-  const [newCategory, setNewCategory] = useState("");
-  const [editingCategory, setEditingCategory] = useState(null);
-  const [editedCategoryName, setEditedCategoryName] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [products, setProducts] = useState([]);
-  const [newProduct, setNewProduct] = useState({
-    name: "",
-    description: "",
-    price: "",
-    image: null,
-  });
-  const [editingProduct, setEditingProduct] = useState(null);
-  const hasData =
-    newProduct.name ||
-    newProduct.description ||
-    newProduct.price ||
-    newProduct.image;
   const imageInputRef = useRef(null);
 
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) fetchCategories(token);
-  }, []);
+  // Custom hooks
+  const {
+    categories,
+    newCategory,
+    setNewCategory,
+    editingCategory,
+    setEditingCategory,
+    editedCategoryName,
+    setEditedCategoryName,
+    addCategory,
+    updateCategory,
+    deleteCategory,
+  } = useCategories();
 
-  const fetchCategories = async (token) => {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    const data = await res.json();
-    setCategories(data);
-  };
+  const {
+    selectedCategory,
+    setSelectedCategory,
+    products,
+    newProduct,
+    setNewProduct,
+    editingProduct,
+    fetchProducts,
+    addProduct,
+    updateProduct,
+    deleteProduct,
+    toggleProductActive,
+    startEditingProduct,
+    cancelEditing,
+  } = useProducts();
 
-  const fetchProducts = async (categoryId) => {
-    selectedCategoryRef.current = categoryId;
-    if (!selectedCategory) setSelectedCategory(categoryId);
-    const token = sessionStorage.getItem("token");
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/products/${categoryId}`,
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await res.json();
-    setProducts(data);
-  };
+  const { uploadImage, isUploading } = useImageUpload();
 
+  // Handlers
   const handleInputChange = (e, setter) => setter(e.target.value);
 
   const handleImageChange = async (e) => {
     const file = e.target.files[0];
-    console.log("Archivo seleccionado:", file);
-    if (!file) {
-      console.warn("No se seleccionó ningún archivo.");
-      return;
-    }
-    if (editingProduct) {
-      setNewProduct((prev) => ({ ...prev, image: file, imageFile: file }));
-      console.log("Modo edición: imagen guardada localmente.");
-      return;
-    }
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "infusion2");
-    try {
-      const res = await fetch(
-        "https://api.cloudinary.com/v1_1/dntqcucm0/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      if (!res.ok) {
-        const errorData = await res.json();
-        console.error("Error al subir imagen a Cloudinary:", errorData);
-        return;
+    const result = await uploadImage(file, !!editingProduct);
+    
+    if (result) {
+      if (editingProduct) {
+        setNewProduct((prev) => ({ ...prev, image: file, imageFile: file }));
+      } else if (result.url) {
+        setNewProduct((prev) => ({ ...prev, image: result.url }));
       }
-
-      const data = await res.json();
-      console.log("Respuesta de Cloudinary:", data);
-
-      if (data.secure_url) {
-        setNewProduct((prev) => ({ ...prev, image: data.secure_url }));
-      } else {
-        console.error("Cloudinary no devolvió una URL segura:", data);
-      }
-    } catch (error) {
-      console.error("Error inesperado al subir imagen:", error);
     }
   };
 
-  const addCategory = async () => {
-    const token = sessionStorage.getItem("token");
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/categories`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ name: newCategory }),
-    });
-    if (res.ok) {
-      fetchCategories(token);
-      setNewCategory("");
-    }
-  };
-
-  const updateCategory = async (categoryId) => {
-    const token = sessionStorage.getItem("token");
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/categories/${categoryId}`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ name: editedCategoryName }),
-      }
-    );
-    if (res.ok) {
-      fetchCategories(token);
-      setEditingCategory(null);
-    }
-  };
-
-  const deleteCategory = async (categoryId) => {
-    const token = sessionStorage.getItem("token");
-    await fetch(`${import.meta.env.VITE_API_URL}/categories/${categoryId}`, {
-      method: "DELETE",
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    fetchCategories(token);
-    setSelectedCategory(null);
-    setProducts([]);
-  };
-
-  const addProduct = async (e) => {
+  const handleAddProduct = async (e) => {
     e.preventDefault();
-    if (
-      !newProduct.name ||
-      !newProduct.image ||
-      !newProduct.price ||
-      !newProduct.description
-    ) {
-      alert("Por favor, completa todos los campos.");
-      return;
+    const success = await addProduct();
+    if (success && imageInputRef.current) {
+      imageInputRef.current.value = "";
     }
-    const token = sessionStorage.getItem("token");
+  };
 
-    console.log("Datos de newProduct:", newProduct);
-    const categoryId = selectedCategoryRef.current || selectedCategory;
-
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/products`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: newProduct.name,
-        description: newProduct.description,
-        price: newProduct.price,
-        image: newProduct.image,
-        categoryId: categoryId,
-      }),
-    });
-    if (res.ok) {
-      fetchProducts(categoryId);
-      setNewProduct({ name: "", description: "", price: "", image: null });
+  const handleUpdateProduct = async (e) => {
+    e.preventDefault();
+    const success = await updateProduct();
+    if (success) {
+      if (productFormRef.current) {
+        productFormRef.current.reset();
+      }
       if (imageInputRef.current) {
         imageInputRef.current.value = "";
       }
-    } else {
-      const errorText = await res.text();
-      console.error("Error en la solicitud:", res.status, errorText);
     }
   };
 
   const handleEditProduct = (product) => {
-    setEditingProduct(product);
-    setNewProduct({
-      name: product.name,
-      description: product.description,
-      price: product.price,
-      image: product.image,
-    });
-    if (!selectedCategory) {
-      setSelectedCategory(product.categoryId);
-    }
+    startEditingProduct(product);
     setTimeout(() => {
       if (productFormRef.current) {
         productFormRef.current.scrollIntoView({ behavior: "smooth" });
@@ -203,111 +87,26 @@ function MenuManager() {
     }, 100);
   };
 
-  function toggleProductActive(productId) {
-    fetch(
-      `${import.meta.env.VITE_API_URL}/products/${productId}/toggle-active`,
-      {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-        },
-      }
-    )
-      .then(async (res) => {
-        if (!res.ok) {
-          const errorText = await res.text();
-          throw new Error(`Error ${res.status}: ${errorText}`);
-        }
-        return res.json();
-      })
-      .then((data) => {
-        setProducts((prevProducts) =>
-          prevProducts.map((p) =>
-            p._id === productId ? { ...p, activo: data.activo } : p
-          )
-        );
-      })
-      .catch((err) => console.error("Error al cambiar estado:", err.message));
-  }
-
-  const updateProduct = async (e) => {
-    e.preventDefault();
-    if (!editingProduct) return;
-
-    const token = sessionStorage.getItem("token");
-    const formData = new FormData();
-    formData.append("name", newProduct.name);
-    formData.append("description", newProduct.description);
-    formData.append("price", newProduct.price);
-
-    if (newProduct.imageFile) {
-      formData.append("image", newProduct.imageFile);
+  const handleCancelForm = () => {
+    cancelEditing();
+    if (productFormRef.current) {
+      productFormRef.current.reset();
     }
-
-    try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/products/${editingProduct._id}`,
-        {
-          method: "PUT",
-          headers: { Authorization: `Bearer ${token}` },
-          body: formData,
-        }
-      );
-
-      const responseData = await res.json();
-
-      if (res.ok) {
-        setProducts((prevProducts) =>
-          prevProducts.map((p) =>
-            p._id === responseData._id ? responseData : p
-          )
-        );
-        setEditingProduct(null);
-        setNewProduct({
-          name: "",
-          description: "",
-          price: "",
-          image: null,
-          imageFile: null,
-        });
-
-        if (productFormRef.current) {
-          productFormRef.current.reset();
-        }
-
-        if (imageInputRef.current) {
-          imageInputRef.current.value = "";
-        }
-      } else {
-        console.error(
-          "Error al actualizar producto:",
-          res.status,
-          responseData
-        );
-      }
-    } catch (error) {
-      console.error("Error inesperado al actualizar producto:", error);
+    if (imageInputRef.current) {
+      imageInputRef.current.value = "";
     }
   };
 
-  const deleteProduct = async (productId) => {
-    const token = sessionStorage.getItem("token");
-    const res = await fetch(
-      `${import.meta.env.VITE_API_URL}/products/${productId}`,
-      {
-        method: "DELETE",
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    if (res.ok) {
-      console.log("Producto eliminado exitosamente");
-      fetchProducts(selectedCategory);
-    } else {
-      const errorMessage = await res.text();
-      console.error("Error al eliminar producto:", res.status, errorMessage);
-    }
+  const handleDeleteCategory = async (categoryId) => {
+    await deleteCategory(categoryId);
+    setSelectedCategory(null);
   };
+
+  const hasData =
+    newProduct.name ||
+    newProduct.description ||
+    newProduct.price ||
+    newProduct.image;
 
   return (
     <div>
@@ -319,6 +118,7 @@ function MenuManager() {
         onChange={(e) => handleInputChange(e, setNewCategory)}
       />
       <button onClick={addCategory}>Agregar</button>
+      
       <div className="categories-menu">
         <ul>
           {categories.map((category) => (
@@ -353,7 +153,7 @@ function MenuManager() {
                   </button>
                   <button
                     className="icon-btn"
-                    onClick={() => deleteCategory(category._id)}
+                    onClick={() => handleDeleteCategory(category._id)}
                   >
                     <FaTrash size={15} />
                   </button>
@@ -363,13 +163,14 @@ function MenuManager() {
           ))}
         </ul>
       </div>
+
       {selectedCategory && (
         <div className="formulario">
           <h2>Productos</h2>
           <div className="formulario-inputs">
             <form
               ref={productFormRef}
-              onSubmit={editingProduct ? updateProduct : addProduct}
+              onSubmit={editingProduct ? handleUpdateProduct : handleAddProduct}
               className="formulario-contenedor"
             >
               <input
@@ -404,24 +205,24 @@ function MenuManager() {
                 onChange={handleImageChange}
                 className="input"
                 ref={imageInputRef}
+                disabled={isUploading}
               />
-              <button type="submit" className="boton-principal">
-                {editingProduct ? "Actualizar Producto" : "Agregar Producto"}
+              <button 
+                type="submit" 
+                className="boton-principal"
+                disabled={isUploading}
+              >
+                {isUploading 
+                  ? "Subiendo imagen..." 
+                  : editingProduct 
+                    ? "Actualizar Producto" 
+                    : "Agregar Producto"}
               </button>
               {hasData && (
                 <button
                   type="button"
                   className="boton-cancelar"
-                  onClick={() => {
-                    setNewProduct({
-                      name: "",
-                      description: "",
-                      price: "",
-                      image: null,
-                    });
-                    setEditingProduct(null);
-                    productFormRef.current.reset();
-                  }}
+                  onClick={handleCancelForm}
                 >
                   Cancelar
                 </button>
@@ -437,7 +238,6 @@ function MenuManager() {
                   src={product.image}
                   alt={product.name}
                 />
-
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
                 <p>
@@ -448,7 +248,6 @@ function MenuManager() {
                     minimumFractionDigits: 0,
                   })}
                 </p>
-
                 <div>
                   <button
                     onClick={() => toggleProductActive(product._id)}
