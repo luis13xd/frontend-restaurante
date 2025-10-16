@@ -471,7 +471,7 @@
 
   .mm-categories,
   .mm-form {
-    padding: 16px;
+    padding: 6px;
   }
 
   .mm-categories h2,
@@ -482,7 +482,7 @@
   .mm-form-content {
     grid-template-columns: 1fr;
     gap: 12px;
-    padding: 16px;
+    padding: 6px;
   }
 
   .mm-btn-primary,
