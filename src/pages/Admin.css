@@ -1,4 +1,4 @@
-/*------------------------------------    Admin Panel (limpio)     --------------------------------*/
+/*------------------------------------    Admin Panel    --------------------------------*/
 * {
     margin: 0;
 }
@@ -90,9 +90,18 @@ button:hover {
 }
 
 .admin-tabs button.active:hover {
-    background-color: #0056b3; 
+    background-color: #0056b3;
 }
 
 .admin-content {
     margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+
+    /* Contenedor principal */
+    .admin-panel {
+        margin: auto;
+        padding: 5px;
+    }
 }
