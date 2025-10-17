@@ -142,7 +142,8 @@ function MenuManager() {
                       <span onClick={() => fetchProducts(category._id)}>
                         {category.name}
                       </span>
-                      <button
+                     <div>
+                       <button
                         className="mm-icon-btn"
                         onClick={() => {
                           setEditingCategory(category._id);
@@ -157,6 +158,7 @@ function MenuManager() {
                       >
                         <FaTrash size={15} />
                       </button>
+                     </div>
                     </>
                   )}
                 </li>
