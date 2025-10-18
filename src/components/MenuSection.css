@@ -97,11 +97,11 @@
 
 .decrease-btn,
 .increase-btn {
-  background: none;
+  background: red;
   border: 1px solid #ccc;
   cursor: pointer;
   font-size: 0.9rem;
-  color: #333;
+  color: #ffffff;
   padding: 4px 6px;
   border-radius: 4px;
   transition: background-color 0.2s;
