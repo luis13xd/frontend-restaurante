@@ -97,12 +97,14 @@
 
 .decrease-btn,
 .increase-btn {
+  align-items: center;
+  justify-content: center;
   background: red;
   border: 1px solid #ccc;
   cursor: pointer;
   font-size: 0.9rem;
   color: #ffffff;
-  padding: 4px 6px;
+  padding: 5px 6px 4px 6px;
   border-radius: 4px;
   transition: background-color 0.2s;
 }
