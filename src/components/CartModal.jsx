@@ -22,35 +22,40 @@ function CartModal({ onClose }) {
   };
 
   return (
-    <div className="cart-modal">
-      <div className="cart-content">
-        <button className="close-btn" onClick={onClose}>
+    <div className="modalcarrito-overlay">
+      <div className="modalcarrito-container">
+        <button className="modalcarrito-btnclose" onClick={onClose}>
           <FaTimes />
         </button>
-        <h3>Carrito de Compras</h3>
+        <h3 className="modalcarrito-heading">Carrito de Compras</h3>
 
         {cart.length === 0 ? (
-          <p>El carrito está vacío.</p>
+          <p className="modalcarrito-emptymsg">El carrito está vacío.</p>
         ) : (
           <>
-            {cart.map((item) => (
-              <div key={item._id} className="cart-item">
-                <img src={item.image} alt={item.name} />
-                <div className="item-info">
-                  <h4>{item.name}</h4>
-                  <p>${item.price} x {item.quantity}</p>
-                  <button onClick={() => removeFromCart(item._id)}>Eliminar</button>
+            <div className="modalcarrito-listbox">
+              {cart.map((item) => (
+                <div key={item._id} className="modalcarrito-card">
+                  <img src={item.image} alt={item.name} className="modalcarrito-cardimg" />
+                  <div className="modalcarrito-carddata">
+                    <h4 className="modalcarrito-cardtitle">{item.name}</h4>
+                    <p className="modalcarrito-cardprice">${item.price} x {item.quantity}</p>
+                    <button 
+                      className="modalcarrito-cardremove" 
+                      onClick={() => removeFromCart(item._id)}
+                    >
+                      Eliminar
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-
-            {/* Total del pedido */}
-            <div className="cart-total">
-              <h4>Total: ${total}</h4>
+              ))}
             </div>
 
-            {/* Botón de pedir */}
-            <button className="order-btn" onClick={handleOrder}>
+            <div className="modalcarrito-totalbox">
+              <h4 className="modalcarrito-totaltext">Total: ${total}</h4>
+            </div>
+
+            <button className="modalcarrito-whatsappbtn" onClick={handleOrder}>
               Pedir por WhatsApp
             </button>
           </>

@@ -1,63 +1,288 @@
-.cart-modal {
-    position: fixed;
-    top: 0;
-    right: 0;
-    width: 300px;
-    height: 100vh;
-    background: white;
-    box-shadow: -2px 0 10px rgba(0, 0, 0, 0.2);
-    padding: 20px;
-    overflow-y: auto;
-    z-index: 1;
+/* Overlay del modal - fondo semi-transparente */
+.modalcarrito-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  width: 450px;
+  height: 100vh;
+  background: #fefefe;
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  z-index: 9999;
+  animation: modalcarrito-slidein 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+@keyframes modalcarrito-slidein {
+  from {
+    transform: translateX(100%);
   }
-  
-  .cart-content {
-    display: flex;
-    flex-direction: column;
+  to {
+    transform: translateX(0);
   }
-  
-  .cart-item {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
+}
+
+/* Contenedor principal del modal */
+.modalcarrito-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 32px 28px;
+  background: linear-gradient(180deg, #fafbfc 0%, #ffffff 100%);
+}
+
+/* Botón de cerrar */
+.modalcarrito-btnclose {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  color: #6b7280;
+  background: #f3f4f6;
+  border: 1.5px solid #e5e7eb;
+  font-size: 1.2rem;
+  cursor: pointer;
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.25s ease;
+  z-index: 10;
+}
+
+.modalcarrito-btnclose:hover {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+  color: #374151;
+  transform: scale(1.05);
+}
+
+/* Título principal */
+.modalcarrito-heading {
+  color: #111827;
+  font-size: 1.85rem;
+  font-weight: 800;
+  margin: 0 0 28px 0;
+  padding-top: 4px;
+  letter-spacing: -0.8px;
+}
+
+/* Mensaje de carrito vacío */
+.modalcarrito-emptymsg {
+  color: #9ca3af;
+  text-align: center;
+  padding: 80px 24px;
+  font-size: 1.1rem;
+  margin: 0;
+  font-weight: 500;
+}
+
+/* Contenedor de items con scroll */
+.modalcarrito-listbox {
+  flex: 1;
+  overflow-y: auto;
+  margin: 0 -8px;
+  padding: 0 8px 16px 8px;
+}
+
+/* Tarjeta individual del producto */
+.modalcarrito-card {
+  display: flex;
+  align-items: flex-start;
+  background: #ffffff;
+  padding: 18px;
+  margin-bottom: 14px;
+  border-radius: 16px;
+  border: 2px solid #f3f4f6;
+  transition: all 0.3s ease;
+  animation: modalcarrito-fadecard 0.35s ease;
+}
+
+@keyframes modalcarrito-fadecard {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
   }
-  
-  .cart-item img {
-    width: 50px;
-    height: 50px;
-    margin-right: 10px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .item-info {
-    flex-grow: 1;
+}
+
+.modalcarrito-card:hover {
+  background: #fafbfc;
+  border-color: #e5e7eb;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+}
+
+/* Imagen del producto */
+.modalcarrito-cardimg {
+  width: 85px;
+  height: 85px;
+  object-fit: cover;
+  border-radius: 12px;
+  margin-right: 18px;
+  border: 2px solid #f3f4f6;
+  background: #fafbfc;
+}
+
+/* Datos del producto */
+.modalcarrito-carddata {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modalcarrito-cardtitle {
+  margin: 0;
+  color: #1f2937;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.3px;
+}
+
+.modalcarrito-cardprice {
+  margin: 0;
+  color: #6366f1;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.2px;
+}
+
+/* Botón eliminar */
+.modalcarrito-cardremove {
+  align-self: flex-start;
+  background: #ffffff;
+  color: #f87171;
+  border: 2px solid #fee2e2;
+  padding: 8px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 700;
+  transition: all 0.25s ease;
+  letter-spacing: -0.2px;
+}
+
+.modalcarrito-cardremove:hover {
+  background: #fef2f2;
+  border-color: #fecaca;
+  color: #ef4444;
+  transform: translateY(-2px);
+}
+
+.modalcarrito-cardremove:active {
+  transform: translateY(0);
+}
+
+/* Caja del total */
+.modalcarrito-totalbox {
+  background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
+  padding: 24px;
+  margin: 16px -8px 20px -8px;
+  border-top: 3px solid #f3f4f6;
+  border-bottom: 3px solid #f3f4f6;
+  border-radius: 12px;
+}
+
+.modalcarrito-totaltext {
+  margin: 0;
+  color: #111827;
+  font-size: 1.65rem;
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: -0.8px;
+}
+
+/* Botón de WhatsApp */
+.modalcarrito-whatsappbtn {
+  background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
+  color: #ffffff;
+  border: none;
+  padding: 18px 32px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 1.08rem;
+  font-weight: 800;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 8px 20px rgba(16, 185, 129, 0.25);
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-top: 4px;
+}
+
+.modalcarrito-whatsappbtn:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px rgba(16, 185, 129, 0.35);
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+}
+
+.modalcarrito-whatsappbtn:active {
+  transform: translateY(-1px);
+}
+
+/* Scrollbar personalizado */
+.modalcarrito-listbox::-webkit-scrollbar {
+  width: 7px;
+}
+
+.modalcarrito-listbox::-webkit-scrollbar-track {
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.modalcarrito-listbox::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 10px;
+}
+
+.modalcarrito-listbox::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modalcarrito-overlay {
+    width: 100%;
+    max-width: 450px;
   }
-  
-  .close-btn {
-    color: black;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    align-self: flex-end;
+}
+
+@media (max-width: 480px) {
+  .modalcarrito-overlay {
+    width: 100%;
   }
 
-  .cart-controls {
-    display: flex;
-    align-items: center;
-    gap: 10px;
+  .modalcarrito-container {
+    padding: 24px 20px;
   }
-  
-  .decrease-btn, .increase-btn {
-    background-color: #ff5e5e;
-    border: none;
-    color: white;
-    padding: 5px;
-    cursor: pointer;
+
+  .modalcarrito-heading {
+    font-size: 1.6rem;
   }
-  
-  .quantity {
-    font-size: 16px;
-    font-weight: bold;
+
+  .modalcarrito-card {
+    padding: 16px;
   }
-  
-  
+
+  .modalcarrito-cardimg {
+    width: 75px;
+    height: 75px;
+  }
+
+  .modalcarrito-cardtitle {
+    font-size: 1.05rem;
+  }
+
+  .modalcarrito-totaltext {
+    font-size: 1.5rem;
+  }
+
+  .modalcarrito-whatsappbtn {
+    font-size: 1rem;
+    padding: 16px 28px;
+  }
+}
