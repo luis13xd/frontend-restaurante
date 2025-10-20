@@ -27,7 +27,7 @@ function CartModal({ onClose }) {
         <button className="modalcarrito-btnclose" onClick={onClose}>
           <FaTimes />
         </button>
-        <h3 className="modalcarrito-heading">Carrito de Compras</h3>
+        <h3 className="modalcarrito-heading">Pedido</h3>
 
         {cart.length === 0 ? (
           <p className="modalcarrito-emptymsg">El carrito está vacío.</p>
