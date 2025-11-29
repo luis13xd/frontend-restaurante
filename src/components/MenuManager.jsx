@@ -121,7 +121,9 @@ function MenuManager() {
               categories.map((category) => (
                 <li
                   key={category._id}
-                  className={selectedCategory === category._id ? "mm-active" : ""}
+                  className={
+                    selectedCategory === category._id ? "mm-active" : ""
+                  }
                 >
                   {editingCategory === category._id ? (
                     <>
@@ -139,26 +141,31 @@ function MenuManager() {
                     </>
                   ) : (
                     <>
-                      <span onClick={() => fetchProducts(category._id)}>
-                        {category.name}
-                      </span>
-                     <div>
-                       <button
-                        className="mm-icon-btn"
+                      <span
                         onClick={() => {
-                          setEditingCategory(category._id);
-                          setEditedCategoryName(category.name);
+                          setSelectedCategory(category._id);
+                          fetchProducts(category._id);
                         }}
                       >
-                        <FaEdit size={15} />
-                      </button>
-                      <button
-                        className="mm-icon-btn mm-delete"
-                        onClick={() => handleDeleteCategory(category._id)}
-                      >
-                        <FaTrash size={15} />
-                      </button>
-                     </div>
+                        {category.name}
+                      </span>
+                      <div>
+                        <button
+                          className="mm-icon-btn"
+                          onClick={() => {
+                            setEditingCategory(category._id);
+                            setEditedCategoryName(category.name);
+                          }}
+                        >
+                          <FaEdit size={15} />
+                        </button>
+                        <button
+                          className="mm-icon-btn mm-delete"
+                          onClick={() => handleDeleteCategory(category._id)}
+                        >
+                          <FaTrash size={15} />
+                        </button>
+                      </div>
                     </>
                   )}
                 </li>
