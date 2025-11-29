@@ -41,10 +41,11 @@ function MenuManager() {
   const { uploadImage, isUploading } = useImageUpload();
 
   useEffect(() => {
-    if (categories.length > 0 && !selectedCategory) {
-      fetchProducts(categories[0]._id);
-    }
-  }, [categories]);
+  if (categories.length > 0 && !selectedCategory) {
+    setSelectedCategory(categories[0]._id);
+    fetchProducts(categories[0]._id);
+  }
+}, [categories, selectedCategory, fetchProducts, setSelectedCategory]);
 
   const handleInputChange = (e, setter) => setter(e.target.value);
 
