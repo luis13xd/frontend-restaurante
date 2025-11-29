@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { useCategories } from "../hooks/useCategories";
 import { useProducts } from "../hooks/useProducts";
@@ -39,6 +39,12 @@ function MenuManager() {
   } = useProducts();
 
   const { uploadImage, isUploading } = useImageUpload();
+
+  useEffect(() => {
+    if (categories.length > 0 && !selectedCategory) {
+      fetchProducts(categories[0]._id);
+    }
+  }, [categories]);
 
   const handleInputChange = (e, setter) => setter(e.target.value);
 
@@ -94,6 +100,8 @@ function MenuManager() {
     newProduct.description ||
     newProduct.price ||
     newProduct.image;
+
+
 
   return (
     <div className="mm-container">
