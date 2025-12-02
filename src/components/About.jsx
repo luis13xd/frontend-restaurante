@@ -19,7 +19,7 @@ const About = () => {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1 }}
       >
-        En Infusión Mística, fusionamos ingredientes naturales con la esencia
+        En Infusión, fusionamos ingredientes naturales con la esencia
         del bienestar. Cada taza es una experiencia sensorial única.
       </motion.p>
 
