@@ -54,7 +54,7 @@ const About = () => {
           <img src={nosotrosImg3} alt="Compromiso" />
           <h3>Compromiso</h3>
           <p>
-            Ingredientes naturales, cultivados con respeto a la naturaleza.
+            Ingredientes naturales, ambiente familiar y agradable.
           </p>
         </motion.div>
       </div>
