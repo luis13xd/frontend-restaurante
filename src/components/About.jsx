@@ -32,8 +32,7 @@ const About = () => {
           <img src={nosotrosImg1} alt="Historia" />
           <h3>Nuestra Historia</h3>
           <p>
-            Desde nuestros inicios, nos dedicamos a seleccionar las mejores
-            hierbas y especias.
+            Desde nuestros inicios, nos dedicamos a seleccionar los mejores productos y el mejor ambiente.
           </p>
         </motion.div>
 
@@ -44,7 +43,7 @@ const About = () => {
         >
           <img src={nosotrosImg2} alt="Misión" />
           <h3>Nuestra Misión</h3>
-          <p>Brindar infusiones únicas que fortalezcan cuerpo y alma.</p>
+          <p>Brindar una experiencia unica en nuestro restaurante campestre.</p>
         </motion.div>
 
         <motion.div
@@ -55,7 +54,7 @@ const About = () => {
           <img src={nosotrosImg3} alt="Compromiso" />
           <h3>Compromiso</h3>
           <p>
-            100% ingredientes naturales, cultivados con respeto a la naturaleza.
+            Ingredientes naturales, cultivados con respeto a la naturaleza.
           </p>
         </motion.div>
       </div>
