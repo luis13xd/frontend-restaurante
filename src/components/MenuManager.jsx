@@ -106,7 +106,7 @@ function MenuManager() {
 
   return (
     <div className="mm-container">
-      {/* Categorías */}
+      
       <div className="mm-categories">
         <h2>Categorías</h2>
         <div className="mm-category-input">
@@ -184,7 +184,6 @@ function MenuManager() {
         </div>
       </div>
 
-      {/* Productos */}
       {selectedCategory && (
         <div className="mm-form">
           <h2>Productos</h2>
