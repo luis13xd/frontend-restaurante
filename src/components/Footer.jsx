@@ -24,7 +24,7 @@ function Footer() {
 
         {/* Redes sociales */}
         <div className="footer-social">
-          <a href="https://www.facebook.com" target="_blank" rel="noopener noreferrer">
+          <a href="" target="_blank" rel="noopener noreferrer">
             <FaFacebookF />
           </a>
           <a href="https://www.instagram.com" target="_blank" rel="noopener noreferrer">
