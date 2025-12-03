@@ -42,7 +42,6 @@ function LocationSection() {
             title="Ubicación del Restaurante Infusión"
           ></iframe>
           
-          {/* Overlay para hacer click */}
           <div className="map-overlay">
             <div className="click-indicator">
               <span>📍 Click para abrir en Google Maps</span>
