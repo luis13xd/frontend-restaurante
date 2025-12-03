@@ -2,11 +2,9 @@
 import './LocationSection.css';
 
 function LocationSection() {
-  // Coordenadas extraídas del iframe
   const latitude = 2.519907641932134;
   const longitude = -75.32638543617601;
   
-  // Función para abrir Google Maps en una nueva pestaña
   const openInGoogleMaps = () => {
     const googleMapsUrl = `https://www.google.com/maps?q=${latitude},${longitude}`;
     window.open(googleMapsUrl, '_blank');
@@ -14,12 +12,12 @@ function LocationSection() {
 
   return (
     <div className="location-section" id='ubication'>
-      {/* Título de la sección */}
+      
       <div className="location-header">
         <h2>Ubicación</h2>
       </div>
 
-      {/* Contenedor del mapa */}
+      
       <div className="map-container">
         <div 
           className="map-wrapper"
