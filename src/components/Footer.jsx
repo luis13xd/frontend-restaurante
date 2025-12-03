@@ -35,7 +35,7 @@ function Footer() {
 
       {/* Línea separadora */}
       <div className="footer-bottom">
-        &copy; {new Date().getFullYear()} Infusión Restaurante - Todos los derechos reservados.
+        &copy; {new Date().getFullYear()} Restaurante Infusión - Todos los derechos reservados.
       </div>
     </footer>
   );
