@@ -37,7 +37,6 @@ function MovieManager() {
     const file = e.target.files[0];
     if (file) {
       setSelectedFile(file);
-      // Limpiar la imagen anterior si existe
       setNewMovie((prev) => ({ ...prev, image: null }));
     }
   };
@@ -96,7 +95,6 @@ function MovieManager() {
     try {
       setIsUploadingImage(true);
       
-      // Si hay un archivo nuevo, subirlo primero
       let imageUrl = newMovie.image;
       if (selectedFile) {
         imageUrl = await uploadImageToCloudinary(selectedFile);
@@ -174,7 +172,6 @@ function MovieManager() {
 
       let imageUrl = newMovie.image;
 
-      // Si hay un archivo nuevo, subirlo primero
       if (selectedFile) {
         imageUrl = await uploadImageToCloudinary(selectedFile);
       }
