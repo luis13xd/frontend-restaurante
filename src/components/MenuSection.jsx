@@ -103,7 +103,6 @@ function MenuSection() {
         )}
       </div>
 
-      {/* Productos de la categoría seleccionada */}
       <div className="products-container">
         {productsLoading ? (
           <div
@@ -142,7 +141,6 @@ function MenuSection() {
                     </strong>
                   </p>
 
-                  {/* Controles de carrito */}
                   <div className="cart-controls">
                     {cartItem?.quantity > 0 && (
                       <>
