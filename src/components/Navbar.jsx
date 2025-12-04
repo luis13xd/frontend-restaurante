@@ -10,7 +10,7 @@ function Navbar() {
   const { cart } = useCart();
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [active, setActive] = useState("inicio");
-  const location = useLocation(); // 👈 Hook de React
+  const location = useLocation(); 
 
   useEffect(() => {
     const sections = document.querySelectorAll("section, div[id]");
