@@ -8,7 +8,6 @@ function MovieSection() {
   const [movies, setMovies] = useState([]);
   const [moviesLoading, setMoviesLoading] = useState(true);
 
-  // Obtener películas
   useEffect(() => {
     const url = `${import.meta.env.VITE_API_URL}/public/movies`;
     fetch(url)
@@ -29,7 +28,6 @@ function MovieSection() {
       });
   }, []);
 
-  // Configuración del slider
   const sliderSettings = {
     dots: true,
     infinite: movies.length > 1,
@@ -47,7 +45,6 @@ function MovieSection() {
     <div className="movie-section" id="cine">
       <h2>Cartelera de Cine</h2>
       
-      {/* Slider de películas */}
       <div className="slider-container">
         {moviesLoading ? (
           <div className="loading-message">
@@ -69,7 +66,6 @@ function MovieSection() {
                   />
                 </div>
                 
-                {/* Información de la película */}
                 <div className="movie-info">
                   <h3>{movie.name}</h3>
                   <p>
