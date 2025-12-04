@@ -11,13 +11,11 @@ export function useImageUpload() {
       return null;
     }
 
-    // Si está en modo edición, retornar el archivo sin subirlo
     if (isEditing) {
       console.log("Modo edición: imagen guardada localmente.");
       return { file, url: null };
     }
 
-    // Subir a Cloudinary
     const formData = new FormData();
     formData.append("file", file);
     formData.append("upload_preset", "infusion2");
