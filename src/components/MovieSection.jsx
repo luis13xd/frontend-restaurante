@@ -54,7 +54,6 @@ function MovieSection() {
           <Slider {...sliderSettings}>
             {movies.map((movie) => (
               <div key={movie._id} className="movie-slide">
-                {/* Contenedor de la imagen */}
                 <div className="movie-image-container">
                   <img
                     src={movie.image}
