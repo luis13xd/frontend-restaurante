@@ -75,7 +75,6 @@ function MenuSection() {
 
       <h1>Carta Infusión</h1>
 
-      {/* Menú de categorías */}
       <div className="categories-menu">
         {categoriesLoading ? (
           <div
