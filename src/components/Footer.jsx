@@ -10,7 +10,6 @@ function Footer() {
           <img src={logo} alt="Infusión" />
         </div>
 
-        {/* Información de contacto */}
         <div className="footer-info">
           <h3>Contacto</h3>
           <p>
