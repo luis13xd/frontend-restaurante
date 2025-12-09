@@ -20,7 +20,6 @@ function Footer() {
           </p>
         </div>
 
-        {/* Redes sociales */}
         <div className="footer-social">
           <a href="" target="_blank" rel="noopener noreferrer">
             <FaFacebookF />
