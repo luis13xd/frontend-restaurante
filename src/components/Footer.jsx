@@ -30,7 +30,6 @@ function Footer() {
         </div>
       </div>
 
-      {/* Línea separadora */}
       <div className="footer-bottom">
         &copy; {new Date().getFullYear()} Restaurante Infusión - Todos los derechos reservados.
       </div>
