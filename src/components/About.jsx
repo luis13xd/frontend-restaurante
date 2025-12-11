@@ -20,7 +20,7 @@ const About = () => {
         transition={{ duration: 1 }}
       >
         En Infusión, fusionamos ingredientes naturales con la esencia
-        del bienestar. Cada taza es una experiencia sensorial única.
+        del bienestar. Cada evento es una experiencia sensorial única.
       </motion.p>
 
       <div className="nosotros-grid">
