@@ -102,8 +102,6 @@ function MenuManager() {
     newProduct.price ||
     newProduct.image;
 
-
-
   return (
     <div className="mm-container">
       
