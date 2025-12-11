@@ -16,7 +16,6 @@ function LocationSection() {
       <div className="location-header">
         <h2>Ubicación</h2>
       </div>
-
       
       <div className="map-container">
         <div 
