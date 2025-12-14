@@ -47,7 +47,6 @@ function LocationSection() {
           </div>
         </div>
       </div>
-
     </div>
   );
 }
