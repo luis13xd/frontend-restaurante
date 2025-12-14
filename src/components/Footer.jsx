@@ -13,7 +13,7 @@ function Footer() {
         <div className="footer-info">
           <h3>Contacto</h3>
           <p>
-            <FaPhone /> 316-320-2148
+            <FaPhone /> +57 316-320-2148
           </p>
           <p>
             <FaEnvelope /> infusion0220@gmail.com
