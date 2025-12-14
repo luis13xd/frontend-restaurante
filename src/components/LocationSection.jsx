@@ -1,4 +1,3 @@
-
 import './LocationSection.css';
 
 function LocationSection() {
