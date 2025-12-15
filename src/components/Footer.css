@@ -35,7 +35,7 @@
   }
   
   .footer-social a:hover {
-    color: #f39c12; /* Color dorado al pasar el mouse */
+    color: #f39c12; 
     transform: scale(1.2);
   }
   
