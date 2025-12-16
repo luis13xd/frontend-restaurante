@@ -1,4 +1,3 @@
-
 .modalcarrito-overlay {
   position: fixed;
   top: 0;
@@ -21,7 +20,6 @@
   }
 }
 
-/* Contenedor principal del modal */
 .modalcarrito-container {
   display: flex;
   flex-direction: column;
