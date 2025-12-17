@@ -230,7 +230,6 @@
   background: #9ca3af;
 }
 
-/* Responsive Design */
 @media (max-width: 768px) {
   .modalcarrito-overlay {
     width: 90%;
