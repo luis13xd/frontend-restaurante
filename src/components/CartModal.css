@@ -212,7 +212,6 @@
   transform: translateY(-1px);
 }
 
-/* Scrollbar personalizado */
 .modalcarrito-listbox::-webkit-scrollbar {
   width: 7px;
 }
