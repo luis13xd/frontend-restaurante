@@ -168,7 +168,6 @@
   transform: translateY(0);
 }
 
-/* Caja del total */
 .modalcarrito-totalbox {
   background: linear-gradient(135deg, #f9fafb 0%, #ffffff 100%);
   padding: 24px;
