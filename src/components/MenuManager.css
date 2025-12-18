@@ -92,9 +92,6 @@
   box-shadow: var(--shadow-md);
 }
 
-/* ====================================
-   Lista de Categorías
-==================================== */
 .mm-category-menu {
   display: flex;
   gap: 6px;
