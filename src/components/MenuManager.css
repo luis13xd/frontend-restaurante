@@ -179,9 +179,6 @@
   background: var(--gray-500);
 }
 
-/* ====================================
-   Botones de iconos
-==================================== */
 .mm-icon-btn {
   background: white;
   border: 1px solid var(--gray-300);
