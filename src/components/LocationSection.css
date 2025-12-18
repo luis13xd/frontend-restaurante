@@ -144,36 +144,36 @@
   .location-section {
     padding: 40px 15px;
   }
-  
+
   .location-header h2 {
     font-size: 2rem;
   }
-  
+
   .location-header p {
     font-size: 1rem;
   }
-  
+
   .map-wrapper {
     height: 350px;
   }
-  
+
   .map-container {
     border-radius: 10px;
   }
-  
+
   .map-wrapper iframe {
     border-radius: 10px;
   }
-  
+
   .info-card {
     padding: 20px;
     margin: 0 10px;
   }
-  
+
   .info-card h3 {
     font-size: 1.3rem;
   }
-  
+
   .click-indicator {
     padding: 10px 15px;
     font-size: 0.9rem;
@@ -184,19 +184,19 @@
   .location-section {
     padding: 30px 10px;
   }
-  
+
   .location-header h2 {
     font-size: 1.8rem;
   }
-  
+
   .map-wrapper {
     height: 300px;
   }
-  
+
   .info-card {
     padding: 15px;
   }
-  
+
   .directions-btn {
     padding: 10px 20px;
     font-size: 0.9rem;
