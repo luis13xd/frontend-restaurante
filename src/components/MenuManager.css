@@ -272,9 +272,6 @@
   cursor: not-allowed;
 }
 
-/* ====================================
-   Botones de formulario
-==================================== */
 .mm-btn-primary {
   grid-column: span 2;
   background: linear-gradient(135deg, var(--primary-color), var(--primary-hover));
