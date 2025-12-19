@@ -210,9 +210,6 @@
   border-color: var(--danger-color);
 }
 
-/* ====================================
-   Sección de Productos
-==================================== */
 .mm-form {
   background: white;
   border-radius: var(--radius-lg);
