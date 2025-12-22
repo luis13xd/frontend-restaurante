@@ -428,9 +428,6 @@
   font-weight: 500;
 }
 
-/* ====================================
-   Responsive Design
-==================================== */
 @media (max-width: 768px) {
   .mm-container {
     padding: 2px;
