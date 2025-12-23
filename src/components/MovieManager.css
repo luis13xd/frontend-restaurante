@@ -110,6 +110,7 @@ form button[type="button"] {
 form button[type="button"]:hover {
     background-color: #c53030;
 }
+
 /* Lista de películas */
 .movie-list {
     list-style: none;
