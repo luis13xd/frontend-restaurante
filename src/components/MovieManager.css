@@ -176,7 +176,6 @@ form button[type="button"]:hover {
     margin-top: 5px;
 }
 
-/* Acciones (Botones Editar/Eliminar) */
 .movie-actions {
     display: flex;
     flex-direction: column;
