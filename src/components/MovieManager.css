@@ -144,7 +144,6 @@ form button[type="button"]:hover {
     flex-shrink: 0;
 }
 
-/* Información */
 .movie-infor {
     flex: 1;
     display: flex;
