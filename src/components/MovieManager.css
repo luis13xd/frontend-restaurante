@@ -79,7 +79,6 @@ form input[type="file"] {
     margin-top: 10px;
 }
 
-/* Cuando hay un solo botón, centrarlo */
 .form-buttons.single-button {
     justify-content: center;
 }
