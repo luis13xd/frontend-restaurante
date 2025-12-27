@@ -117,7 +117,6 @@ form button[type="button"]:hover {
     gap: 16px;
 }
 
-/* Tarjeta */
 .movie-card {
     display: flex;
     align-items: center;
