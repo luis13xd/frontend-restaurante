@@ -265,8 +265,6 @@ form button[type="button"]:hover {
     }
 }
 
-/* <-- La llave de cierre correcta de la media query 768px */
-
 @media (max-width: 480px) {
     .movie-manager h2 {
         font-size: 1.5rem;
