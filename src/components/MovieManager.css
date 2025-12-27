@@ -216,7 +216,6 @@ form button[type="button"]:hover {
     border-color: #ef4444;
 }
 
-/*------------------------------------  RESPONSIVE  ------------------------------------*/
 @media (max-width: 768px) {
     .movie-manager {
         margin: 25px 10px;
