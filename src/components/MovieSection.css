@@ -39,7 +39,6 @@
     min-height: 400px;
     max-width: 100%;
     width: 100%;
-    /* 🔑 ocupa el ancho disponible */
     box-sizing: border-box;
     /* para que el padding no expanda */
 }
