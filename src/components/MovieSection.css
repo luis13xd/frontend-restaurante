@@ -40,7 +40,6 @@
     max-width: 100%;
     width: 100%;
     box-sizing: border-box;
-    /* para que el padding no expanda */
 }
 
 .movie-slide:hover {
