@@ -38,7 +38,6 @@
     transition: transform 0.3s ease;
     min-height: 400px;
     max-width: 100%;
-    /* 🔑 no se salga */
     width: 100%;
     /* 🔑 ocupa el ancho disponible */
     box-sizing: border-box;
