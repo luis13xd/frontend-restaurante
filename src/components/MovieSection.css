@@ -47,7 +47,6 @@
     box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
 }
 
-/* Contenedor de la imagen */
 .movie-image-container {
     display: flex;
     justify-content: center;
