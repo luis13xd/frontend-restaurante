@@ -23,7 +23,6 @@
     overflow: hidden;
 }
 
-/* Cada slide de película */
 .movie-slide {
     display: grid !important;
     grid-template-columns: 1fr 1fr;
