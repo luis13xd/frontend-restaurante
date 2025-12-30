@@ -68,7 +68,6 @@
     transform: scale(1.02);
 }
 
-/* Información de la película */
 .movie-info {
     display: flex;
     flex-direction: column;
