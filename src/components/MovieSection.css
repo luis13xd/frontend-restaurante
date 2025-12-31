@@ -164,8 +164,6 @@
     right: -15px;
 }
 
-
-/* Tablets */
 @media (max-width: 1024px) {
     .movie-slide {
         gap: 30px;
