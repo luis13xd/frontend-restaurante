@@ -241,7 +241,6 @@
     }
 }
 
-/* Móviles pequeños */
 @media (max-width: 480px) {
     .movie-section {
         padding: 30px 10px;
