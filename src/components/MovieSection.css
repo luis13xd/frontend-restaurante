@@ -184,7 +184,6 @@
     }
 }
 
-/* Móviles grandes */
 @media (max-width: 768px) {
     .movie-section {
         padding: 40px 15px;
