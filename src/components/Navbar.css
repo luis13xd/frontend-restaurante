@@ -10,8 +10,6 @@
   z-index: 1000;
   background-color: rgba(245, 245, 245, 0.95);
   border-bottom: 1px solid rgba(245, 245, 245, 0.3);
-  
-  /* Padding y altura */
   padding: 12px 20px;
   height: 60px;
   box-sizing: border-box;
