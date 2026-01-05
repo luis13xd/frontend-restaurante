@@ -8,8 +8,6 @@
   right: 0;
   width: 100%;
   z-index: 1000;
-  
-  /* Fondo sólido con transparencia controlada */
   background-color: rgba(245, 245, 245, 0.95);
   
   /* Borrar inferior con degradado */
