@@ -17,7 +17,6 @@
   color: rgb(49, 49, 49);
 }
 
-/* Crear el efecto degradado con un pseudo-elemento */
 .navbar::after {
   content: '';
   position: absolute;
