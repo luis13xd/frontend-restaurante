@@ -97,7 +97,7 @@
 
 .nav-links a.active {
   font-weight: bold;
-  color: #000; /* se diferencia de las demás */
+  color: #000; 
 }
 
 
