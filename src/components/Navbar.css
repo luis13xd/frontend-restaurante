@@ -13,8 +13,6 @@
   padding: 12px 20px;
   height: 60px;
   box-sizing: border-box;
-  
-  /* Sombra sutil */
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   
   color: rgb(49, 49, 49);
