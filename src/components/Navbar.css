@@ -100,8 +100,6 @@
   color: #000; 
 }
 
-
-/* Responsive para móviles */
 @media (max-width: 768px) {
   .navbar {
     padding: 8px 15px;
